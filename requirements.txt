@@ -1,5 +1,6 @@
 pip
 setuptools
+wheel
 six
 ansible
 ansible-core
