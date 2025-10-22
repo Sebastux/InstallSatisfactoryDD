@@ -1,2 +1,6 @@
+pip
+setuptools
+six
 ansible
 ansible-core
+cryptography
