@@ -18,7 +18,7 @@ clear
 # Installation de divers package
 echo "**** Installation des packages pour l'exécution d'Ansible. ****"
 apt-get update
-apt-get install -y aptitude python3 python3-pip python3-apt python3-virtualenv
+apt-get install -y aptitude python3 python3-pip python3-apt python3-venv
 
 # Création du venv
 echo "**** Création d'un environement virtuel pour python. ****"
