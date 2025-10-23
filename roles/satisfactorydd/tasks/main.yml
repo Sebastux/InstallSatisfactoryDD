@@ -4,6 +4,7 @@
     name: ufw
     state: stopped
     enabled: false
+  ignore_errors: true
 
 - name: Suppression du pare-feu par défaut.
   ansible.builtin.apt:
