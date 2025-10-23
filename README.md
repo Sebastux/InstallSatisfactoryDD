@@ -49,6 +49,7 @@ Lancer le script et attendre la fin de l'exécution.
 
 ```bash
 sudo -i
+apt-get update
 apt-get -y install git-all
 git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
 git checkout develop
