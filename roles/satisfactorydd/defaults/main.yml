@@ -1,0 +1,10 @@
+---
+installe_packages: [ 'chrony', 'vim', 'python3-pip', 'python3', 'vim-doc', 'vim-scripts', 'vim-syntastic'
+                  'fail2ban', 'firewalld', 'locate' ]
+
+# Liste des serveurs NTP pour chrony.
+liste_serveur:
+  - 0.fr.pool.ntp.org iburst
+  - 1.fr.pool.ntp.org iburst
+  - 2.fr.pool.ntp.org iburst
+  - 3.fr.pool.ntp.org iburst

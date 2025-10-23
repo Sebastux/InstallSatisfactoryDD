@@ -1,0 +1,133 @@
+---
+- name: Désactivation du pare feu par défaut
+  ansible.builtin.systemd_service:
+    name: ufw
+    state: stopped
+    enabled: false
+
+- name: Suppression du pare-feu par défaut.
+  ansible.builtin.apt:
+    name: ufw
+    state: absent
+    purge: true
+
+- name: Installation des packages.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+
+- name: Arrêt des services.
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  loop:
+    - chrony
+    - fail2ban
+    - firewalld
+
+- name: Vidage de fichiers.
+  ansible.builtin.copy:
+    dest: "{{ item }}"
+    content: ""
+    owner: root
+    group: root
+    mode: '0644'
+    backup: false
+  loop:
+    - /etc/issue
+    - /etc/motd
+
+- name: Suppression des fichiers inutiles.
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - 50-cloud-init.conf
+
+- name: Installation de la banniére.
+  ansible.builtin.template:
+    src: banniere.j2
+    dest: /etc/issue.net
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Création d'un répertoire de surcharge.
+  ansible.builtin.file:
+    path: /etc/systemd/system/sshd.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configuration du ssh.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: false
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - {fichier: 'sshd_config_modif.j2', chemin: '/etc/ssh/sshd_config.d/90-sshd_config_modif.conf'}
+    - {fichier: 'ssh_chiffrement.j2', chemin: '/etc/ssh/sshd_config.d/91-crypto-policies.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/sshd.service.d/durcissemnt.conf'}
+
+- name: Durcissement de la configuration sudo.
+  ansible.builtin.template:
+    src: config_sudo.j2
+    dest: /etc/sudoers.d/99-durcissement
+    backup: false
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Configuration de la timezone.
+  community.general.timezone:
+    name: Europe/Paris
+
+- name: Configuration de chrony.
+  ansible.builtin.template:
+    src: chrony.j2
+    dest: /etc/chrony.conf
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Démarrage du service chrony.
+  ansible.builtin.systemd_service:
+    name: chronyd
+    state: started
+    enabled: true
+
+- name: Création d'un répertoire de surcharge fail2ban.
+  ansible.builtin.file:
+    path: /etc/systemd/system/fail2ban.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Installation de la configuration de fail2ban.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - {fichier: 'fail2ban.j2', chemin: '/etc/fail2ban/jail.local'}
+    - {fichier: 'fail2ban-ssh.j2', chemin: '/etc/fail2ban/jail.d/01-sshd.local'}
+    - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/fail2ban.service.d/durcissemnt.conf'}
+
+- name: Active fail2ban au démarrage.
+  ansible.builtin.systemd_service:
+    name: fail2ban
+    enabled: true
+    daemon-reload: true
+    state: restarted
