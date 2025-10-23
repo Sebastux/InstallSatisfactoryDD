@@ -26,9 +26,13 @@ python3 venv -m venv
 source ./venv/bin/activate
 
 # Installation des packages ansible
+echo ""
+echo "**** Installation des packages python. ****"
 pip install --upgrade -r requirements.txt
 
 # Execution du playbook d'installation
+echo ""
+echo "**** Exécution du playbook. ****"
 ansible-playbook ./site.yml -i ./staging/ --flush-cache
 
 # Désactivation du venv

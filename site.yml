@@ -3,3 +3,4 @@
   hosts: serveur
   gather_facts: yes
   roles:
+    - satisfactorydd
