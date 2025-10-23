@@ -45,7 +45,7 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - 50-cloud-init.conf
+    - /etc/ssh/sshd_config.d/50-cloud-init.conf
 
 - name: Installation de la banniére.
   ansible.builtin.template:
