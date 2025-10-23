@@ -7,7 +7,7 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 - [Pré-requis](#pré-requis)
 - [Variables](#variables)
 - [Utilisation](#utilisation)
-- [Exemples](#exemples)
+- [Execution](#execution)
 - [Ressources](#ressources)
 - [Licence](#licence)
 - [Auteurs](#auteurs)
@@ -25,9 +25,10 @@ Liste des conditions nécessaires pour utiliser ce rôle :
 
 Liste et description des variables configurables du rôle.
 
-| Variable      | Description            | Valeur par défaut         |
-|---------------|-----------------------|---------------------------|
-| `exemple_var` | Explication…          | `valeur`                  |
+| Variable      | Description                             | Valeur par défaut |
+|---------------|-----------------------------------------|-------------------|
+| user_passwd | Mot de passe du compte satisfactorydd   | `P@ssW0rd#2025`   |
+| fail2ban_ssh_whitelist | Liste d'IP à ne pas bannir par fail2ban | `192.168.0.10`    |
 
 ## Utilisation
 
@@ -37,14 +38,23 @@ Comment inclure ce rôle dans un playbook.
 - hosts: your_hosts
   become: yes
   roles:
-    - role: nom_du_role
-      vars:
-        exemple_var: "valeur"
+    - role: satisfactorydd
 ```
 
-## Exemples
+## Execution
 
-Des cas d’usage typiques, liens vers des fichiers d’exemple ou playbooks.
+Se connecter sur le serveur et passer en root.
+Installer git.
+Lancer le script et attendre la fin de l'exécution.
+
+```bash
+sudo -i
+apt-get -y install git-all
+git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
+git checkout develop
+cd InstallSatisfactoryDD
+./install.sh
+```
 
 ## Ressources
 
