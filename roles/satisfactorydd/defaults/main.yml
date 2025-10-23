@@ -1,6 +1,6 @@
 ---
-installe_packages: [ 'chrony', 'vim', 'python3-pip', 'python3', 'vim-doc', 'vim-scripts', 'vim-syntastic'
-                  'fail2ban', 'firewalld', 'locate' ]
+installe_packages: ['chrony', 'vim', 'python3-pip', 'python3', 'vim-doc', 'vim-scripts', 'vim-syntastic',
+                    'fail2ban', 'firewalld', 'locate']
 
 # Liste des serveurs NTP pour chrony.
 liste_serveur:
