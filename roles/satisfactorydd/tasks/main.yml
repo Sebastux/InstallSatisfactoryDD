@@ -33,9 +33,6 @@
     name: "*"
     state: latest
     update_cache: true
-    upgrade: safe
-    autoremove: true
-    autoclean: false
 
 - name: Vidage de fichiers.
   ansible.builtin.copy:
