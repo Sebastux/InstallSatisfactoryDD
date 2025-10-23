@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+
+# Restriction sudo pour l'utilisateur satisfactorydd
+# Autorise uniquement la gestion du service satisfactory
+
+satisfactorydd ALL=(root) NOPASSWD: \
+    /bin/systemctl start satisfactory.service, \
+    /bin/systemctl stop satisfactory.service, \
+    /bin/systemctl restart satisfactory.service, \
+    /bin/systemctl status satisfactory.service

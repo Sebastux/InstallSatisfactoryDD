@@ -131,3 +131,24 @@
     enabled: true
     daemon-reload: true
     state: restarted
+
+- name: "Création d'un compte utilisateur pour le serveur satisfactory."
+  ansible.builtin.user:
+    name: satisfactorydd
+    password: "{{ user_passwd | password_hash('sha512', 'SeBa5TuX59') }}"
+    state: present
+    update_password: on_create
+    shell: /bin/bash
+    groups: sudo
+    create_home: yes
+    comment: "Compte applicatif satisfactory."
+    append: true
+
+- name: Création des droits sudo pour le compte satisfactorydd.
+  ansible.builtin.template:
+    src: sudo_satis.j2
+    dest: /etc/sudoers.d/satisfactorydd
+    backup: false
+    owner: root
+    group: root
+    mode: '0440'
