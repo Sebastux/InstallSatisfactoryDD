@@ -28,6 +28,15 @@
     - fail2ban
     - firewalld
 
+- name: Mise à jour du système.
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+    upgrade: safe
+    autoremove: true
+    autoclean: false
+
 - name: Vidage de fichiers.
   ansible.builtin.copy:
     dest: "{{ item }}"
@@ -56,13 +65,17 @@
     group: root
     mode: '0644'
 
-- name: Création d'un répertoire de surcharge.
+- name: Création de plusieurs répertoires de surcharge.
   ansible.builtin.file:
-    path: /etc/systemd/system/sshd.service.d
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: '0755'
+  loop:
+    - /etc/systemd/system/sshd.service.d/
+    - /usr/lib/systemd/system/chrony.service.d/
+    - /etc/systemd/system/fail2ban.service.d
 
 - name: Configuration du ssh.
   ansible.builtin.template:
@@ -98,20 +111,15 @@
     owner: root
     group: root
     mode: '0644'
+  loop:
+    - {fichier: 'chrony.j2', chemin: '/etc/chrony/chrony.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/chrony.service.d/durcissemnt.conf'}
 
 - name: Démarrage du service chrony.
   ansible.builtin.systemd_service:
     name: chrony
     state: started
     enabled: true
-
-- name: Création d'un répertoire de surcharge fail2ban.
-  ansible.builtin.file:
-    path: /etc/systemd/system/fail2ban.service.d
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
 
 - name: Installation de la configuration de fail2ban.
   ansible.builtin.template:
