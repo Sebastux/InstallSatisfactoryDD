@@ -8,3 +8,5 @@ liste_serveur:
   - 1.fr.pool.ntp.org iburst
   - 2.fr.pool.ntp.org iburst
   - 3.fr.pool.ntp.org iburst
+
+seq: ""
