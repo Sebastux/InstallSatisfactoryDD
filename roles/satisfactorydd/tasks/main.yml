@@ -100,7 +100,7 @@
 
 - name: Démarrage du service chrony.
   ansible.builtin.systemd_service:
-    name: chronyd
+    name: chrony
     state: started
     enabled: true
 
