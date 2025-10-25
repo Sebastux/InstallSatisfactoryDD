@@ -90,7 +90,7 @@
 - name: Durcissement de la configuration sudo.
   ansible.builtin.template:
     src: config_sudo.j2
-    dest: /etc/sudoers.d/99-durcissement
+    dest: /etc/sudoers.d/01-durcissement
     backup: false
     owner: root
     group: root
@@ -146,14 +146,14 @@
     update_password: on_create
     shell: /bin/bash
     groups: sudo
-    create_home: yes
+    create_home: true
     comment: "Compte applicatif satisfactory."
     append: true
 
 - name: Création des droits sudo pour le compte satisfactorydd.
   ansible.builtin.template:
     src: sudo_satis.j2
-    dest: /etc/sudoers.d/satisfactorydd
+    dest: /etc/sudoers.d/10-sudo_satis
     backup: false
     owner: root
     group: root
