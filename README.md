@@ -22,17 +22,17 @@ Liste des conditions nécessaires pour utiliser ce rôle :
 - Droits nécessaires   : sudo
 
 ### materiel
-Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.<br/>
+- Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.<br/>
 Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur.<br/>
 Tout processeur avec un indice de thread unique de 2000 ou supérieur devrait fonctionner.<br/>
 Il n'y a pas de prise en charge 32 bits (x86) ni ARM.<br/>
 S'il s'agit d'une machine virtuelle (VM) (un VPS en est certainement un), un processeur kvm64 ne fonctionnera pas !<br/>
 <br/>
-Mémoire : 8 Go. 16 Go de RAM peuvent être recommandés pour des sauvegardes plus importantes ou pour héberger plus de 4 joueurs.<br/>
-Stockage (Windows) : 12,4 Go de fichiers serveur. L’installation complète du jeu n’est pas requise.<br/>
-Stockage (Linux) : 8 Go. L’installation de base des distributions de serveur standard peut atteindre 2 Go, plus 2 Go de fichiers serveur de jeu.<br/>
-Système d’exploitation : Windows 10, 11, Server 2016, Server 2019 ou Server 2022, ou une distribution Linux comme Debian ou Ubuntu.<br/>
-Connexion Internet : Connexion Internet haut débit. L’hébergement à domicile nécessite la possibilité de configurer une redirection de port ou un VPN.<br/>
+- Mémoire : 8 Go. 16 Go de RAM peuvent être recommandés pour des sauvegardes plus importantes ou pour héberger plus de 4 joueurs.
+- Stockage (Windows) : 12,4 Go de fichiers serveur. L’installation complète du jeu n’est pas requise.
+- Stockage (Linux) : 8 Go. L’installation de base des distributions de serveur standard peut atteindre 2 Go, plus 2 Go de fichiers serveur de jeu.
+- Système d’exploitation : Windows 10, 11, Server 2016, Server 2019 ou Server 2022, ou une distribution Linux comme Debian ou Ubuntu.
+- Connexion Internet : Connexion Internet haut débit. L’hébergement à domicile nécessite la possibilité de configurer une redirection de port ou un VPN.
 
 ## Variables
 
