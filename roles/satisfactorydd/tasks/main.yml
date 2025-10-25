@@ -264,3 +264,9 @@
     name: unattended-upgrades
     state: started
   ignore_errors: true
+
+- name: Démarrage du service Satisfactory.
+  ansible.builtin.systemd_service:
+    name: satisfactory
+    state: started
+    enabled: true
