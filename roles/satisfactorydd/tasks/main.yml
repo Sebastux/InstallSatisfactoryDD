@@ -152,14 +152,14 @@
     comment: "Compte applicatif satisfactory."
     append: true
 
-- name: Création des droits sudo pour le compte utilisateur.
-  ansible.builtin.template:
-    src: sudo_satis.j2
-    dest: /etc/sudoers.d/10-sudo_satis
-    backup: false
-    owner: root
-    group: root
-    mode: '0440'
+# - name: Création des droits sudo pour le compte utilisateur.
+#   ansible.builtin.template:
+#     src: sudo_satis.j2
+#     dest: /etc/sudoers.d/10-sudo_satis
+#     backup: false
+#     owner: root
+#     group: root
+#     mode: '0440'
 
 - name: Activation du dépot multivers.
   ansible.builtin.shell:
