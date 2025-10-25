@@ -22,9 +22,9 @@ Liste des conditions nécessaires pour utiliser ce rôle :
 - Droits nécessaires   : sudo
 
 ### materiel
-Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent. <br\>
-Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur. <br\>
-Tout processeur avec un indice de thread unique de 2000 ou supérieur devrait fonctionner. <br\>
+Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.< br / >
+Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur.<br />
+Tout processeur avec un indice de thread unique de 2000 ou supérieur devrait fonctionner.< br / >
 Il n'y a pas de prise en charge 32 bits (x86) ni ARM. <br\>
 S'il s'agit d'une machine virtuelle (VM) (un VPS en est certainement un), un processeur kvm64 ne fonctionnera pas ! <br\>
  <br\>
