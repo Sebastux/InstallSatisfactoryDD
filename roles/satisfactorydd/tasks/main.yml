@@ -74,7 +74,6 @@
     - /usr/lib/systemd/system/chrony.service.d/
     - /etc/systemd/system/fail2ban.service.d
     - /etc/systemd/system/satisfactory.service.d
-  tags: toto
 
 - name: Configuration du ssh.
   ansible.builtin.template:
@@ -190,7 +189,6 @@
     group: "{{ compte_satisfactory }}"
     mode: '0755'
     recurse: true
-  tags: toto
 
 - name: Copie du script d'installation du serveur.
   ansible.builtin.template:
@@ -200,7 +198,6 @@
     group: "{{ compte_satisfactory }}"
     mode: '0700'
     backup: false
-  tags: toto
 
 - name: Installation du serveur satisfactory.
   ansible.builtin.shell:
@@ -209,7 +206,6 @@
   become: true
   become_user: "{{ compte_satisfactory }}"
   become_method: su
-  tags: toto
 
 - name: Suppression du script d'installation du serveur.
   ansible.builtin.file:
@@ -225,9 +221,8 @@
     mode: '0640'
     backup: false
   loop:
-    - { fichier: 'satis_service.j2', chemin: '/etc/systemd/system/satisfactory.service' }
+    - {fichier: 'satis_service.j2', chemin: '/etc/systemd/system/satisfactory.service'}
     - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/satisfactory.service.d/durcissemnt.conf'}
-  tags: toto
 
 - name: Copie du fichier de règle du pare-feu.
   ansible.builtin.copy:
@@ -236,7 +231,6 @@
     owner: root
     group: root
     mode: '0644'
-  tags: toto
 
 - name: Démarrage du pare-feu
   ansible.builtin.systemd_service:
@@ -244,7 +238,6 @@
     state: restarted
     enabled: true
     daemon-reload: true
-  tags: toto
 
 - name: ouverture des ports du serveur satisfactory.
   ansible.posix.firewalld:
@@ -252,7 +245,6 @@
     permanent: true
     state: enabled
     immediate: true
-  tags: toto
 
 - name: Fermeture des ports non utilisé.
   ansible.posix.firewalld:
@@ -265,4 +257,3 @@
     - {service: 'https', etat: 'disabled'}
     - {service: 'ftp', etat: 'disabled'}
     - {service: 'ntp', etat: 'enabled'}
-  tags: toto
