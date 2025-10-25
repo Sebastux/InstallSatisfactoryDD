@@ -232,7 +232,7 @@
 - name: Copie du fichier de règle du pare-feu.
   ansible.builtin.copy:
     src: satisfactory.xml
-    dest: /etc/firewalld/services/satifactory.xml
+    dest: /etc/firewalld/services/satisfactory.xml
     owner: root
     group: root
     mode: '0644'
