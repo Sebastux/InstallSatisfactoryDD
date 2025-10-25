@@ -10,7 +10,7 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 - [Execution](#execution)
 - [Ressources](#ressources)
 - [Licence](#licence)
-- [Auteurs](#auteurs)
+- [Auteur](#auteurs)
 
 ## Pré-requis
 
@@ -66,7 +66,6 @@ sudo -i
 apt-get update
 apt-get -y install git-all
 git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
-git checkout develop
 cd InstallSatisfactoryDD
 ./install.sh
 ```
