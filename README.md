@@ -4,8 +4,7 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 
 ## Table des matières
 
-- [Pré-requis logiciel](#Pré-requis logiciel)
-- [Pré-requis matériel](#Pré-requis materiel)
+- [Pré-requis](#Pré-requis)
 - [Variables](#variables)
 - [Utilisation](#utilisation)
 - [Execution](#execution)
@@ -13,15 +12,16 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 - [Licence](#licence)
 - [Auteurs](#auteurs)
 
-## Pré-requis logiciel
+## Pré-requis
 
+### logiciel
 Liste des conditions nécessaires pour utiliser ce rôle :  
 - Version ansible      : 12.1.0
 - Version ansible-core : 2.19.3
 - Systèmes supportés   : Ubuntu server 24.04.
 - Droits nécessaires   : sudo
 
-## Pré-requis materiel
+### materiel
 Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.
 Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur. Tout processeur avec un indice de thread unique de 2000 ou supérieur devrait fonctionner.
 Il n'y a pas de prise en charge 32 bits (x86) ni ARM.
