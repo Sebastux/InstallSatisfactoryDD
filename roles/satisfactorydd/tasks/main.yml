@@ -169,16 +169,13 @@
     cmd: dpkg --add-architecture i386
     executable: /bin/bash
 
-- name: Installation de steamcmd.
-  ansible.builtin.shell:
-    cmd: ACCEPT_EULA=Y apt-get install -y steamcmd
-    executable: /bin/bash
+- name: Accepter la licence Steam
+  ansible.builtin.shell: |
+    echo steam steam/question select "I AGREE" | debconf-set-selections
+    echo steam steam/license note '' | debconf-set-selections
 
-#- name: Installation de steamcmd.
-#  ansible.builtin.apt:
-#    name: "{{ steam_packages }}"
-#    state: latest
-#    update_cache: true
-#    dpkg_options: ACCEPT_EULA=Y
-#  environment:
-#    ACCEPT_EULA: "y"
+- name: Installer steamcmd
+  ansible.builtin.apt:
+    name: steamcmd
+    state: present
+    update_cache: yes
