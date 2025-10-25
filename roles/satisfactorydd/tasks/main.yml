@@ -74,6 +74,7 @@
     - /usr/lib/systemd/system/chrony.service.d/
     - /etc/systemd/system/fail2ban.service.d
     - /etc/systemd/system/satisfactory.service.d
+  tags: toto
 
 - name: Configuration du ssh.
   ansible.builtin.template:
