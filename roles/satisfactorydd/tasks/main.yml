@@ -150,7 +150,7 @@
     comment: "Compte applicatif satisfactory."
     append: true
 
-- name: Création des droits sudo pour le compte satisfactorydd.
+- name: Création des droits sudo pour le compte utilisateur.
   ansible.builtin.template:
     src: sudo_satis.j2
     dest: /etc/sudoers.d/10-sudo_satis
@@ -159,11 +159,10 @@
     group: root
     mode: '0440'
 
-- name: Ajout du dépot multiverse pour steam
-  ansible.builtin.apt_repository:
-    repo: multiverse
-    state: present
-    filename: steamcmd
+- name: Activation du dépot multivers.
+  ansible.builtin.shell:
+    cmd: add-apt-repository multiverse
+    executable: /bin/bash
 
 - name: Activation de l'architecture 32 bits.
   ansible.builtin.shell:
