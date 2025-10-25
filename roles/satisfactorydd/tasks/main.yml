@@ -241,15 +241,28 @@
 - name: Démarrage du pare-feu
   ansible.builtin.systemd_service:
     name: firewalld
-    state: started
+    state: restarted
     enabled: true
     daemon-reload: true
   tags: toto
 
-- name: ouverture des ports
+- name: ouverture des ports du serveur satisfactory.
   ansible.posix.firewalld:
     service: satisfactory
     permanent: true
     state: enabled
     immediate: true
+  tags: toto
+
+- name: Fermeture des ports non utilisé.
+  ansible.posix.firewalld:
+    service: "{{ item.service }}"
+    permanent: true
+    state: "{{ item.etat }}"
+    immediate: true
+  loop:
+    - {service: 'http', etat: 'disabled'}
+    - {service: 'https', etat: 'disabled'}
+    - {service: 'ftp', etat: 'disabled'}
+    - {service: 'ntp', etat: 'enabled'}
   tags: toto
