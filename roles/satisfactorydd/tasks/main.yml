@@ -169,7 +169,7 @@
     cmd: dpkg --add-architecture i386
     executable: /bin/bash
 
-- name: Installation de steamcdm.
+- name: Installation de steamcmd.
   ansible.builtin.apt:
     name: "{{ steam_packages }}"
     state: latest
