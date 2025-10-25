@@ -179,3 +179,23 @@
     name: steamcmd
     state: present
     update_cache: yes
+
+- name: Création du répertoire de stockage du jeu.
+  ansible.builtin.file:
+    path: "/home/{{ compte_satisfactory }}/steam"
+    state: directory
+    owner: "{{ compte_satisfactory }}"
+    group: "{{ compte_satisfactory }}"
+    mode: '0755'
+    recurse: true
+  tags: toto
+
+- name: Copie du script d'installation du serveur.
+  ansible.builtin.template:
+    src: install_satis.j2
+    dest: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
+    owner: "{{ compte_satisfactory }}"
+    group: "{{ compte_satisfactory }}"
+    mode: '0700'
+    backup: false
+  tags: toto
