@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Serveur satis</short>
+  <description>Serveur de jeu Satifactory</description>
+  <port port="7777" protocol="tcp"/>
+  <port port="7777" protocol="udp"/>
+  <port port="8888" protocol="tcp"/>
+</service>
+

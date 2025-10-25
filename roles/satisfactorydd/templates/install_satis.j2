@@ -1,0 +1,17 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+
+{{ ansible_managed | comment }}
+
+#==============================================================================
+# Titre            : install_satis.sh
+# Description      : Installe le serveur satisfactory en utillisant steamcmd
+# Auteur           : Sébastux
+# Date             : 25/10/2025
+# Modification     : 25/10/2025
+# Version          : 1.00
+# Utilisation      : install_satis.sh
+# Notes            : Script lancé par ansible.
+#==============================================================================
+
+steamcmd +force_install_dir /home/{{ compte_satisfactory }}/steam +login anonymous +app_update 1690800 validate +quit

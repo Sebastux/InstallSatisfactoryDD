@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+
+
+[sshd]
+mode     = normal
+enabled  = true
+port     = ssh
+logpath  = %(sshd_log)s
+backend  = systemd
+
+maxretry = {{ fail2ban_maxretry | default('3') }}
+bantime  = {{ fail2ban_bantime | default('3600') }}
+findtime = 600

@@ -1,0 +1,52 @@
+{{ ansible_managed | comment }}
+
+# Configuration du port d'écoute
+Port {{ ssh_port | default('22') }}
+
+# Gestion réseau
+GatewayPorts no
+PermitTunnel no
+
+# Configuration de l'adresse d'écoute
+ListenAddress {{ ansible_default_ipv4.address }}
+
+# Utilisation de la dernière version du protocole
+Protocol 2
+
+# Type de clé ssh à utiliser
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Gestion du fichier de log
+LogLevel VERBOSE
+
+# Gestion de la connexion en root
+PermitRootLogin no
+
+# Nombre de tentative et de session
+MaxAuthTries 3
+MaxSessions 2
+
+# Gestion de la connexion par mot de passe
+PasswordAuthentication yes
+PermitEmptyPasswords no
+
+# Utilisation de PAM pour la gestion des comptes.
+UsePAM yes
+
+# Gestion de l'agent
+AllowAgentForwarding no
+X11Forwarding no
+AllowTcpForwarding no
+AllowStreamLocalForwarding no
+Compression no
+ClientAliveCountMax 2
+TCPKeepAlive no
+
+# Gestion de l'affichage à la connexion
+PrintMotd no
+PrintLastLog yes
+Banner /etc/issue.net
+
+# Création du fichier pid
+PidFile /var/run/sshd.pid

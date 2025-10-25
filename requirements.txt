@@ -1,0 +1,8 @@
+pip
+setuptools
+wheel
+six
+ansible
+ansible-core
+cryptography
+passlib
