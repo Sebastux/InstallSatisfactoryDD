@@ -70,7 +70,7 @@
     group: root
     mode: '0755'
   loop:
-    - /etc/systemd/system/sshd.service.d/
+    - /usr/lib/systemd/system/ssh.service.d/
     - /usr/lib/systemd/system/chrony.service.d/
     - /etc/systemd/system/fail2ban.service.d
 
@@ -85,7 +85,7 @@
   loop:
     - {fichier: 'sshd_config_modif.j2', chemin: '/etc/ssh/sshd_config.d/90-sshd_config_modif.conf'}
     - {fichier: 'ssh_chiffrement.j2', chemin: '/etc/ssh/sshd_config.d/91-crypto-policies.conf'}
-    - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/sshd.service.d/durcissemnt.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/ssh.service.d/durcissemnt.conf'}
 
 - name: Durcissement de la configuration sudo.
   ansible.builtin.template:
@@ -102,8 +102,8 @@
 
 - name: Configuration de chrony.
   ansible.builtin.template:
-    src: chrony.j2
-    dest: /etc/chrony.conf
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
     backup: false
     owner: root
     group: root
