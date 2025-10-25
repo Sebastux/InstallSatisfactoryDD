@@ -174,3 +174,5 @@
     name: "{{ steam_packages }}"
     state: latest
     update_cache: true
+  environment:
+    ACCEPT_EULA: "y"
