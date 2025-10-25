@@ -199,3 +199,11 @@
     mode: '0700'
     backup: false
   tags: toto
+
+- name: Installation du serveur satisfactory.
+  ansible.builtin.shell:
+    cmd: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
+    executable: /bin/bash
+  become: true
+  become_user: "{{ compte_satisfactory }}"
+  tags: toto
