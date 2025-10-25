@@ -1,4 +1,6 @@
 ---
+ansible_managed: "Ce fichier est géré par ansible. Toute modification de celui-ci sera définitivement perdu à la prochaine exécution du playbook sur cette machine."
+
 installe_packages: ['chrony', 'vim', 'python3-pip', 'python3', 'vim-doc', 'vim-scripts', 'vim-syntastic',
                     'fail2ban', 'firewalld', 'locate', 'btop', 'bpytop', 'htop', 'iotop']
 
