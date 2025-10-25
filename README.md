@@ -29,9 +29,8 @@ Il n'y a pas de prise en charge 32 bits (x86) ni ARM.<br/>
 S'il s'agit d'une machine virtuelle (VM) (un VPS en est certainement un), un processeur kvm64 ne fonctionnera pas !<br/>
 
 - Mémoire : 8 Go. 16 Go de RAM peuvent être recommandés pour des sauvegardes plus importantes ou pour héberger plus de 4 joueurs.<br/>
-- Stockage (Windows) : 12,4 Go de fichiers serveur. L’installation complète du jeu n’est pas requise.<br/>
 - Stockage (Linux) : 8 Go. L’installation de base des distributions de serveur standard peut atteindre 2 Go, plus 2 Go de fichiers serveur de jeu.<br/>
-- Système d’exploitation : Windows 10, 11, Server 2016, Server 2019 ou Server 2022, ou une distribution Linux comme Debian ou Ubuntu.<br/>
+- Système d’exploitation : Ubuntu server 24.04.<br/>
 - Connexion Internet : Connexion Internet haut débit. L’hébergement à domicile nécessite la possibilité de configurer une redirection de port ou un VPN.<br/>
 
 ## Variables
@@ -81,5 +80,11 @@ cd InstallSatisfactoryDD
 The unlicense
 
 ## Auteur
-
 - Sébastux
+
+## Versions
+
+![alt text](https://img.shields.io/badge/version-v1.0.0-brightgreen.svg "Logo Version") (25/10/2024) :
+
+  - Création du rôle.
+  - Installation et configuration de la version 1.1 de satisfactory sur Ubuntu 24.04.
