@@ -8,7 +8,8 @@ ansible_user=root
 ansible_remote_user=root
 
 # Mot de passe par défaut du compte satisdd
-user_passwd=P@ssW0rd#2025
+compte_satisfactory=satisfactoryds
+satisfactory_passwd=P@ssW0rd#2025
 
 # Liste d'adresses IP à ne pas bannir.
 fail2ban_ssh_whitelist=192.168.0.10

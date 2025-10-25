@@ -140,8 +140,8 @@
 
 - name: "Création d'un compte utilisateur pour le serveur satisfactory."
   ansible.builtin.user:
-    name: satisfactorydd
-    password: "{{ user_passwd | password_hash('sha512', 'SeBa5TuX59') }}"
+    name: "{{ compte_satisfactory }}"
+    password: "{{ satisfactory_passwd | password_hash('sha512', 'SeBa5TuX59') }}"
     state: present
     update_password: on_create
     shell: /bin/bash
