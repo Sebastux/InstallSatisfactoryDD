@@ -1,17 +1,10 @@
 {{ ansible_managed | comment }}
 
+# Révoquer toute élévation par défaut pour satisfactoryds
+"{{ compte_satisfactory }}" ALL=(ALL) !ALL
 
-# Restriction sudo pour l'utilisateur {{ compte_satisfactory }}
-# Autorise uniquement la gestion du service satisfactory
-
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: !ALL
-{{ compte_satisfactory }} ALL=(root) PASSWD: !ALL
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl start satisfactory.service
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop satisfactory.service
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart satisfactory.service
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl status satisfactory.service
-
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl start satisfactory
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop satisfactory
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart satisfactory
-{{ compte_satisfactory }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl status satisfactory
+# Autoriser UNIQUEMENT satisfactory.service
+"{{ compte_satisfactory }}" ALL=(root) NOPASSWD: /usr/bin/systemctl start satisfactory.service
+"{{ compte_satisfactory }}" ALL=(root) NOPASSWD: /usr/bin/systemctl stop satisfactory.service
+"{{ compte_satisfactory }}" ALL=(root) NOPASSWD: /usr/bin/systemctl restart satisfactory.service
+"{{ compte_satisfactory }}" ALL=(root) NOPASSWD: /usr/bin/systemctl status satisfactory.service
