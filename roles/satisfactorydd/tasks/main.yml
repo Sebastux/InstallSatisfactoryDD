@@ -158,3 +158,20 @@
     owner: root
     group: root
     mode: '0440'
+
+- name: Ajout du dépot multiverse pour steam
+  ansible.builtin.apt_repository:
+    repo: multiverse
+    state: present
+    filename: steamcmd
+
+- name: Activation de l'architecture 32 bits.
+  ansible.builtin.shell:
+    cmd: dpkg --add-architecture i386
+    executable: /bin/bash
+
+- name: Installation de steamcdm.
+  ansible.builtin.apt:
+    name: "{{ steam_packages }}"
+    state: latest
+    update_cache: true
