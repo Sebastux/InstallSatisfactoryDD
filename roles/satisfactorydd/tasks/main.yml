@@ -170,10 +170,15 @@
     executable: /bin/bash
 
 - name: Installation de steamcmd.
-  ansible.builtin.apt:
-    name: "{{ steam_packages }}"
-    state: latest
-    update_cache: true
-    dpkg_options: ACCEPT_EULA=Y
+  ansible.builtin.shell:
+    cmd: ACCEPT_EULA=Y apt-get install -y "{{ steam_packages }}"
+    executable: /bin/bash
+
+#- name: Installation de steamcmd.
+#  ansible.builtin.apt:
+#    name: "{{ steam_packages }}"
+#    state: latest
+#    update_cache: true
+#    dpkg_options: ACCEPT_EULA=Y
 #  environment:
 #    ACCEPT_EULA: "y"
