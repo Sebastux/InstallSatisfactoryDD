@@ -171,7 +171,7 @@
 
 - name: Installation de steamcmd.
   ansible.builtin.shell:
-    cmd: ACCEPT_EULA=Y apt-get install -y "{{ steam_packages }}"
+    cmd: ACCEPT_EULA=Y apt-get install -y steamcmd
     executable: /bin/bash
 
 #- name: Installation de steamcmd.
