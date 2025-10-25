@@ -2,7 +2,7 @@
 installe_packages: ['chrony', 'vim', 'python3-pip', 'python3', 'vim-doc', 'vim-scripts', 'vim-syntastic',
                     'fail2ban', 'firewalld', 'locate', 'btop', 'bpytop', 'htop', 'iotop']
 
-steam_packages: ['steamcmd:i386']
+steam_packages: ['steamcmd']
 
 # Liste des serveurs NTP pour chrony.
 liste_serveur:
