@@ -33,7 +33,7 @@ pip install --upgrade -r requirements.txt
 # Execution du playbook d'installation
 echo ""
 echo "**** Exécution du playbook. ****"
-ansible-playbook ./site.yml -i ./staging/ --flush-cache
+ansible-playbook ./site.yml -i ./production/ --flush-cache
 
 # Désactivation du venv
 deactivate

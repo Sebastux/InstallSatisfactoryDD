@@ -1,0 +1,15 @@
+[serveur]
+ansible_host=localhost
+
+[serveur:vars]
+ansible_connection=local 
+ansible_python_interpreter="/usr/bin/python3"
+ansible_user=root
+ansible_remote_user=root
+
+# Mot de passe par défaut du compte satisdd
+compte_satisfactory=satisfactoryds
+satisfactory_passwd=P@ssW0rd#2025
+
+# Liste d'adresses IP à ne pas bannir.
+fail2ban_ssh_whitelist=192.168.0.10
