@@ -27,6 +27,7 @@
     - chrony
     - fail2ban
     - firewalld
+    - unattended-upgrades
 
 - name: Mise à jour du système.
   ansible.builtin.apt:
@@ -257,3 +258,9 @@
     - {service: 'https', etat: 'disabled'}
     - {service: 'ftp', etat: 'disabled'}
     - {service: 'ntp', etat: 'enabled'}
+
+- name: Relancer unattended-upgrades
+  ansible.builtin.systemd_service:
+    name: unattended-upgrades
+    state: started
+  ignore_errors: true
