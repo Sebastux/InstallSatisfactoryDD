@@ -206,4 +206,5 @@
     executable: /bin/bash
   become: true
   become_user: "{{ compte_satisfactory }}"
+  become_method: su
   tags: toto
