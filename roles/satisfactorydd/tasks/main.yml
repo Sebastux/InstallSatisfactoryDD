@@ -174,5 +174,6 @@
     name: "{{ steam_packages }}"
     state: latest
     update_cache: true
-  environment:
-    ACCEPT_EULA: "y"
+    dpkg_options: ACCEPT_EULA=Y
+#  environment:
+#    ACCEPT_EULA: "y"
