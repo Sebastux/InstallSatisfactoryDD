@@ -1,1 +1,34 @@
 ---
+- name: Installation des packages.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+
+- name: Mise à jour du système.
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Configuration de la timezone.
+  community.general.timezone:
+    name: Europe/Paris
+
+- name: Configuration de chrony.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - {fichier: 'chrony.j2', chemin: '/etc/chrony/chrony.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/chrony.service.d/durcissemnt.conf'}
+
+- name: Redémarrage du service chrony.
+  ansible.builtin.systemd_service:
+    name: chrony
+    state: restarted
+    enabled: true
