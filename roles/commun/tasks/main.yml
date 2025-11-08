@@ -1,19 +1,27 @@
 ---
-- name: Installation des packages.
-  ansible.builtin.apt:
-    name: "{{ installe_packages }}"
-    state: latest
-    update_cache: true
-
 - name: Mise à jour du système.
   ansible.builtin.apt:
     name: "*"
     state: latest
     update_cache: true
 
+- name: Installation des packages.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+
 - name: Configuration de la timezone.
   community.general.timezone:
     name: Europe/Paris
+
+- name: Création du répertoire de surcharge pour chrony.
+  ansible.builtin.file:
+    path: usr/lib/systemd/system/chrony.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: Configuration de chrony.
   ansible.builtin.template:
