@@ -30,6 +30,11 @@
     - {key: "net.ipv4.conf.all.accept_redirects", value: "0"}
     - {key: "net.ipv4.conf.all.log_martians", value: "1"}
 
+- name: Activation du dépôt multiverse
+  ansible.builtin.apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+    state: present
+    update_cache: true
 
 - name: Configuration du SSH.
   ansible.builtin.import_tasks:
