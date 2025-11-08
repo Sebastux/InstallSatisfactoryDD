@@ -1,0 +1,6 @@
+---
+- name: Relancer unattended-upgrades
+  ansible.builtin.systemd_service:
+    name: unattended-upgrades
+    state: started
+  ignore_errors: true
