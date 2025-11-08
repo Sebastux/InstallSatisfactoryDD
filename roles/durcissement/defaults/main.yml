@@ -1,2 +1,4 @@
 ---
-installe_packages: ['fail2ban', 'firewalld', 'unattended-upgrades', 'libpam-tmpdir']
+installe_packages: ['fail2ban', 'firewalld', 'unattended-upgrades', 'libpam-tmpdir',
+                    'auditd', 'needrestart', 'libpam-cracklib']
+

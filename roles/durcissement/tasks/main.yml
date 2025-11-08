@@ -13,6 +13,24 @@
     state: latest
     update_cache: true
 
+- name: Configurer les paramètres sysctl
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items:
+    - {key: "dev.tty.ldisc_autoload", value: "0"}
+    - {key: "fs.protected_fifos", value: "2"}
+    - {key: "fs.suid_dumpable", value: "0"}
+    - {key: "kernel.core_uses_pid", value: "1"}
+    - {key: "kernel.kptr_restrict", value: "2"}
+    - {key: "kernel.perf_event_paranoid", value: "3"}
+    - {key: "kernel.sysrq", value: "0"}
+    - {key: "net.core.bpf_jit_harden", value: "2"}
+    - {key: "net.ipv4.conf.all.accept_redirects", value: "0"}
+    - {key: "net.ipv4.conf.all.log_martians", value: "1"}
+
+
 - name: Configuration du SSH.
   ansible.builtin.import_tasks:
     file: ssh.yml
