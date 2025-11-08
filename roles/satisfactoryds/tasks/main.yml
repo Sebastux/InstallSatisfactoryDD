@@ -1,8 +1,9 @@
 ---
-- name: Activation du dépot multivers.
-  ansible.builtin.shell:
-    cmd: add-apt-repository multiverse
-    executable: /bin/bash
+- name: Activation du dépôt multiverse
+  ansible.builtin.apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+    state: present
+    update_cache: true
 
 - name: Activation de l'architecture 32 bits.
   ansible.builtin.shell:
