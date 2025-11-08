@@ -1,7 +1,7 @@
 # Variables principales
-VENV_DIR := .venv
+VENV_DIR := venv
 REQ_FILE := requirements.txt
-ANSIBLE_PLAYBOOK := site.yml
+PLAYBOOK ?= site.yml    # <-- Playbook par défaut
 PYTHON := python3
 
 # Environnement : staging (par défaut) ou production
@@ -11,83 +11,72 @@ ENV ?= staging
 TAGS ?=
 EXTRA_VARS ?=
 
-# Couleurs
-GREEN := \033[0;32m
-YELLOW := \033[1;33m
-RED := \033[0;31m
-NC := \033[0m
+# Détection du support couleurs
+use_colors := $(shell if [ -t 1 ] && command -v tput >/dev/null 2>&1 && [ $$(tput colors) -ge 8 ]; then echo yes; else echo no; fi)
 
-# Règle par défaut
+ifeq ($(use_colors),yes)
+GREEN   := $(shell tput setaf 2)
+YELLOW  := $(shell tput setaf 3)
+RED     := $(shell tput setaf 1)
+RESET   := $(shell tput sgr0)
+else
+GREEN   :=
+YELLOW  :=
+RED     :=
+RESET   :=
+endif
+
 .DEFAULT_GOAL := help
-
-## Détection et installation des paquets système nécessaires
-system-deps:
-	@echo "$(YELLOW)🔍 Détection du système et installation des dépendances système...$(NC)"
-	@if [ -f /etc/debian_version ]; then \
-		echo "$(YELLOW)→ Distribution Debian/Ubuntu détectée.$(NC)"; \
-		sudo apt-get update -y && \
-		sudo apt-get install -y python3-venv python3-dev libffi-dev libssl-dev build-essential; \
-	elif [ -f /etc/redhat-release ]; then \
-		echo "$(YELLOW)→ Distribution Red Hat/CentOS/Fedora détectée.$(NC)"; \
-		sudo dnf install -y python3-venv python3-devel libffi-devel openssl-devel gcc || \
-		sudo yum install -y python3-venv python3-devel libffi-devel openssl-devel gcc; \
-	else \
-		echo "$(RED)⚠️  Distribution non reconnue. Installe manuellement les dépendances nécessaires.$(NC)"; \
-	fi
-	@echo "$(GREEN)✅ Paquets système installés ou déjà présents.$(NC)"
 
 ## Création du venv et installation des dépendances Python
 $(VENV_DIR)/bin/activate: $(REQ_FILE)
-	@echo "$(YELLOW)Création de l'environnement virtuel...$(NC)"
+	@printf "%s\n" "$(YELLOW)Création de l'environnement virtuel...$(RESET)"
 	@test -d $(VENV_DIR) || $(PYTHON) -m venv $(VENV_DIR)
-	@echo "$(YELLOW)Installation des dépendances Python...$(NC)"
-	@$(VENV_DIR)/bin/pip install --upgrade pip
+	@printf "%s\n" "$(YELLOW)Installation des dépendances Python...$(RESET)"
+	@$(VENV_DIR)/bin/pip install --upgrade -r req_pip.txt
 	@$(VENV_DIR)/bin/pip install -r $(REQ_FILE)
 	@touch $(VENV_DIR)/bin/activate
-	@echo "$(GREEN)✅ Environnement virtuel prêt !$(NC)"
+	@printf "%s\n" "$(GREEN)✅ Environnement virtuel prêt !$(RESET)"
 
-## Installer ou mettre à jour les dépendances
-install: system-deps $(VENV_DIR)/bin/activate
+install: $(VENV_DIR)/bin/activate
+	@printf "%s\n" "$(GREEN)✅ Installation terminée.$(RESET)"
 
-## Vérifie que le répertoire d'environnement existe
 check-env:
 	@if [ ! -d "$(ENV)" ]; then \
-		echo "$(RED)❌ Le répertoire d'environnement '$(ENV)' n'existe pas.$(NC)"; \
+		printf "%s\n" "$(RED)❌ Le répertoire d'environnement '$(ENV)' n'existe pas.$(RESET)"; \
 		exit 1; \
 	fi
 
 ## Exécution du playbook
 run: install check-env
-	@CMD="$(VENV_DIR)/bin/ansible-playbook $(ANSIBLE_PLAYBOOK) -i $(ENV)"; \
+	@CMD="$(VENV_DIR)/bin/ansible-playbook $(PLAYBOOK) -i $(ENV)"; \
 	if [ -n "$(TAGS)" ]; then \
 		CMD="$$CMD --tags $(TAGS)"; \
-		echo "$(YELLOW)→ Exécution avec tags : $(TAGS)$(NC)"; \
+		printf "%s\n" "$(YELLOW)→ Exécution avec tags : $(TAGS)$(RESET)"; \
 	fi; \
 	if [ -n "$(EXTRA_VARS)" ]; then \
 		CMD="$$CMD -e '$(EXTRA_VARS)'"; \
-		echo "$(YELLOW)→ Variables supplémentaires : $(EXTRA_VARS)$(NC)"; \
+		printf "%s\n" "$(YELLOW)→ Variables supplémentaires : $(EXTRA_VARS)$(RESET)"; \
 	fi; \
-	echo "$(YELLOW)Lancement du playbook sur l'environnement $(ENV)...$(NC)"; \
+	printf "%s\n" "$(YELLOW)Lancement du playbook $(PLAYBOOK) sur $(ENV)...$(RESET)"; \
 	$$CMD; \
-	echo "$(GREEN)✅ Playbook exécuté avec succès sur $(ENV).$(NC)"
+	printf "%s\n" "$(GREEN)✅ Playbook exécuté avec succès sur $(ENV).$(RESET)"
 
-## Nettoyage
 clean:
-	@echo "$(YELLOW)Suppression de l'environnement virtuel...$(NC)"
+	@printf "%s\n" "$(YELLOW)Suppression de l'environnement virtuel...$(RESET)"
 	@rm -rf $(VENV_DIR)
-	@echo "$(GREEN)✅ Environnement supprimé.$(NC)"
+	@printf "%s\n" "$(GREEN)✅ Environnement supprimé.$(RESET)"
 
-## Réinstallation complète
 reinstall: clean install
 
-## Aide
 help:
 	@echo "Commandes disponibles :"
-	@echo "  make system-deps                   - Installe les paquets système nécessaires"
-	@echo "  make install                       - Crée le venv et installe les dépendances Python"
-	@echo "  make run [ENV=staging]             - Exécute le playbook sur staging (par défaut)"
-	@echo "  make run ENV=production            - Exécute le playbook sur la production"
-	@echo "  make run TAGS=install              - Exécute uniquement certains tags"
-	@echo "  make run EXTRA_VARS=\"key=value\"    - Passe des variables supplémentaires"
-	@echo "  make clean                         - Supprime le venv"
-	@echo "  make reinstall                     - Réinstalle tout proprement"
+	@echo "  make install                          - Crée le venv et installe les dépendances Python"
+	@echo "  make run                              - Exécute le playbook par défaut (site.yml)"
+	@echo "  make run PLAYBOOK=playbooks/x.yml     - Exécute un playbook spécifique"
+	@echo "  make run ENV=production               - Exécute sur la production"
+	@echo "  make run TAGS=install                 - Exécute avec certains tags"
+	@echo "  make run EXTRA_VARS=\"key=value\"       - Passe des variables supplémentaires"
+	@echo "  make clean                            - Supprime le venv"
+	@echo "  make reinstall                        - Réinstalle tout proprement"
+
