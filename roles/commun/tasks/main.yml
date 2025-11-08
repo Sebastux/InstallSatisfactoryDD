@@ -17,7 +17,7 @@
 
 - name: Création du répertoire de surcharge pour chrony.
   ansible.builtin.file:
-    path: usr/lib/systemd/system/chrony.service.d/
+    path: /usr/lib/systemd/system/chrony.service.d/
     state: directory
     owner: root
     group: root
