@@ -32,3 +32,48 @@
     name: chrony
     state: restarted
     enabled: true
+
+- name: Création des répertoires pour les alias, du répertoire d'ansible.
+  file:
+    path: "{{ item.chemin }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - {chemin: '/root/.alias', mode: '0644'}
+    - {chemin: '/etc/skel/.alias', mode: '0755'}
+
+- name: Copie des templates d'alias.
+  template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: "{{ item.sauve }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - {fichier: 'alias_utilisateur.j2', chemin: '/etc/skel/.alias/alias.txt', sauve: 'no'}
+    - {fichier: 'alias_root.j2', chemin: '/root/.alias/alias.txt', sauve: 'no'}
+
+- name: Ajout d'une référence dans le fichier bashrc utilisateurs.
+  lineinfile:
+    path: /etc/skel/.bashrc
+    line: 'source ~/.alias/alias.txt'
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: EOF
+    state: present
+    backup: yes
+
+- name: Ajout d'une référence dans le fichier bashrc root.
+  lineinfile:
+    path: /root/.bashrc
+    line: 'source ~/.alias/alias.txt'
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: EOF
+    state: present
+    backup: yes
