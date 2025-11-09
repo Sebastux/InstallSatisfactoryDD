@@ -1,4 +1,9 @@
 ---
+- name: Vérification du mot de passe.
+  ansible.builtin.fail:
+    msg: "Vous devez modifier le mot de passe par défaut."
+  when: satisfactory_passwd == "P@ssW0rd#2025"
+
 - name: Activation du dépôt multiverse
   ansible.builtin.apt_repository:
     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
