@@ -23,6 +23,14 @@
   ansible.builtin.import_tasks:
     file: kernel.yml
 
+- name: Durcissement de la politique des mots de passe.
+  ansible.builtin.import_tasks:
+    file: loin_def.yml
+
+- name: DÉsactivation de divers modules du noyau.
+  ansible.builtin.import_tasks:
+    file: modprobe.yml
+
 - name: Configuration de l'unattended-upgrades.'
   ansible.builtin.import_tasks:
     file: unattended-upgrades.yml
