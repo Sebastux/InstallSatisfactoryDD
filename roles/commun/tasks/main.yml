@@ -94,7 +94,7 @@
 
 - name: Suppression des fichiers motd.
   ansible.builtin.file:
-    path:
+    path: "{{ item }}"
     state: absent
   loop:
     - /run/motd.dynamic
