@@ -50,7 +50,7 @@
 
 - name: Création d'une clé SSH pour le compte utilisateur.
   community.crypto.openssh_keypair:
-    path: "{{ role_path }}/../../cles_ssh/satisfactory-{{ ansible_hostname }}"
+    path: "{{ role_path }}/../../../cles_ssh/satisfactory-{{ ansible_hostname }}"
     backend: cryptography
     comment: "Clé SSH générée par ansible."
     mode: '0600'
