@@ -9,7 +9,7 @@ ansible_remote_user=root
 
 # Information pour la création du compte applcatif
 compte_satisfactory=satisfactoryds
-satisfactory_passwd=P@ssW0rd#2025
+satisfactory_passwd="P@ssW0rd#2026"
 satisfactory_salt='SeBa5TuX59'
 
 # Liste d'adresses IP à ne pas bannir.
