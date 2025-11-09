@@ -20,8 +20,16 @@ echo "**** Installation des packages pour l'exécution d'Ansible. ****"
 apt-get update
 apt-get install -y aptitude python3 python3-pip python3-apt python3-venv build-essential
 
+# Affichage de divers informations
 echo "***************************************************************"
+cat ficscommun/satis
 echo "Pour installer ansible, utilisez la commande make install."
 echo "Pour installer le serveur satisfactory, utilisez la commande make run."
 echo "Pour avoir plus de commande, utilisez la commande make."
 echo "Bon jeux."
+echo ""
+echo ""
+echo "ATTENTION :"
+echo "Avant de lancer le serveur, pensez à éditer le fichier production/inventory pour configurer"
+echo "l'adresse IP à mettre en liste blanche pour fail2ban ainsi que le mot de passe du compte applicatif."
+echo "Consultez le README.md pour plus d'informations."
