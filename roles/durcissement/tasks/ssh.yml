@@ -1,0 +1,68 @@
+---
+- name: Suppression des fichiers inutiles.
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/ssh/sshd_config.d/50-cloud-init.conf
+
+- name: Vidage de fichiers.
+  ansible.builtin.copy:
+    dest: "{{ item }}"
+    content: ""
+    owner: root
+    group: root
+    mode: '0644'
+    backup: false
+  loop:
+    - /etc/issue
+    - /etc/motd
+
+- name: Installation de la banniére SSH.
+  ansible.builtin.template:
+    src: banniere.j2
+    dest: /etc/issue.net
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Création du répertoire de surcharge pour ssh.
+  ansible.builtin.file:
+    path: /usr/lib/systemd/system/ssh.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configuration du ssh.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: false
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - {fichier: 'sshd_config_modif.j2', chemin: '/etc/ssh/sshd_config.d/90-sshd_config_modif.conf'}
+    - {fichier: 'ssh_chiffrement.j2', chemin: '/etc/ssh/sshd_config.d/91-crypto-policies.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/ssh.service.d/durcissemnt.conf'}
+
+- name: Création du répertoire de stockage des clés ssh
+  ansible.builtin.file:
+    path: /root/cles_ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Création d'une clé SSH pour le compte utilisateur.
+  community.crypto.openssh_keypair:
+    path: "/root/cles_ssh/satisfactory-{{ ansible_hostname }}"
+    backend: cryptography
+    comment: "Clé SSH générée par ansible."
+    mode: '0600'
+    regenerate: full_idempotence
+    state: present
+    type: ed25519
+  delegate_to: localhost

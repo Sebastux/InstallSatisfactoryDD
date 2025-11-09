@@ -1,0 +1,24 @@
+---
+- name: Passage de la valeur de UMASK à 027
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: '^UMASK'
+    line: 'UMASK 027'
+    state: present
+    backup: true
+
+- name: Modification de la valeur de SHA_CRYPT_MIN_ROUNDS.
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: '^SHA_CRYPT_MIN_ROUNDS'
+    line: 'SHA_CRYPT_MIN_ROUNDS 65536'
+    state: present
+    backup: true
+
+- name: Modification de la valeur de SHA_CRYPT_MAX_ROUNDS.
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: '^SHA_CRYPT_MAX_ROUNDS'
+    line: 'SHA_CRYPT_MAX_ROUNDS 65536'
+    state: present
+    backup: true

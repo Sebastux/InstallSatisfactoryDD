@@ -1,0 +1,37 @@
+---
+- name: Désactivation du pare feu par défaut
+  ansible.builtin.systemd_service:
+    name: ufw
+    state: stopped
+    enabled: false
+  ignore_errors: true
+
+- name: Suppression du pare-feu par défaut.
+  ansible.builtin.apt:
+    name: ufw
+    state: absent
+    purge: true
+
+- name: Installation des packages.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+
+- name: Démarrage du pare-feu.
+  ansible.builtin.systemd_service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Fermeture des ports non utilisé.
+  ansible.posix.firewalld:
+    service: "{{ item.service }}"
+    permanent: true
+    state: "{{ item.etat }}"
+    immediate: true
+  loop:
+    - {service: 'http', etat: 'disabled'}
+    - {service: 'https', etat: 'disabled'}
+    - {service: 'ftp', etat: 'disabled'}
+    - {service: 'ntp', etat: 'enabled'}

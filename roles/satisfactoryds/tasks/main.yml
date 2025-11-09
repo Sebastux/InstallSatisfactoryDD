@@ -1,0 +1,108 @@
+---
+- name: Activation du dépôt multiverse
+  ansible.builtin.apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+    state: present
+    update_cache: true
+
+- name: Activation de l'architecture 32 bits.
+  ansible.builtin.shell:
+    cmd: dpkg --add-architecture i386
+    executable: /bin/bash
+
+- name: Accepter la licence Steam.
+  ansible.builtin.shell: |
+    echo steam steam/question select "I AGREE" | debconf-set-selections
+    echo steam steam/license note '' | debconf-set-selections
+
+- name: Installation de steamcmd.
+  ansible.builtin.apt:
+    name: steamcmd
+    state: present
+    update_cache: true
+
+- name: "Création du compte de service {{ compte_satisfactory }}."
+  ansible.builtin.user:
+    name: "{{ compte_satisfactory }}"
+    password: "{{ satisfactory_passwd | password_hash('sha512', satisfactory_salt) }}"
+    state: present
+    update_password: on_create
+    shell: /bin/bash
+    create_home: true
+    comment: "Compte applicatif satisfactory."
+    system: true
+
+- name: Création du répertoire de stockage du jeu.
+  ansible.builtin.file:
+    path: "/home/{{ compte_satisfactory }}/steam"
+    state: directory
+    owner: "{{ compte_satisfactory }}"
+    group: "{{ compte_satisfactory }}"
+    mode: '0755'
+    recurse: true
+
+- name: Copie du script d'installation du serveur.
+  ansible.builtin.template:
+    src: install_satis.j2
+    dest: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
+    owner: "{{ compte_satisfactory }}"
+    group: "{{ compte_satisfactory }}"
+    mode: '0700'
+    backup: false
+
+- name: Installation du serveur satisfactory.
+  ansible.builtin.shell:
+    cmd: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
+    executable: /bin/bash
+  become: true
+  become_user: "{{ compte_satisfactory }}"
+  become_method: su
+
+- name: Suppression du script d'installation du serveur.
+  ansible.builtin.file:
+    path: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
+    state: absent
+
+- name: Copie des fichiers service satisfactory.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    owner: root
+    group: root
+    mode: '0640'
+    backup: false
+  loop:
+    - {fichier: 'satis_service.j2', chemin: '/etc/systemd/system/satisfactory.service'}
+    - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/satisfactory.service.d/durcissemnt.conf'}
+
+- name: Prise en compte du nouveau fichier de service.
+  ansible.builtin.systemd_service:
+    daemon-reload: true
+
+- name: Copie du fichier de règle du pare-feu.
+  ansible.builtin.copy:
+    src: satisfactory.xml
+    dest: /etc/firewalld/services/satisfactory.xml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Redémarrage du pare-feu.
+  ansible.builtin.systemd_service:
+    name: firewalld
+    state: restarted
+    enabled: true
+    daemon-reload: true
+
+- name: Ouverture des ports du serveur satisfactory.
+  ansible.posix.firewalld:
+    service: satisfactory
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Démarrage du service Satisfactory.
+  ansible.builtin.systemd_service:
+    name: satisfactory
+    state: started
+    enabled: true
