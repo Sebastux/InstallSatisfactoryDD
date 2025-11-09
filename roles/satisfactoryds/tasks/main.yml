@@ -68,6 +68,14 @@
     path: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
     state: absent
 
+- name: Création du répertoire de surcharge pour satisfactory.
+  ansible.builtin.file:
+    path: /etc/systemd/system/satisfactory.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Copie des fichiers service satisfactory.
   ansible.builtin.template:
     src: "{{ item.fichier }}"
