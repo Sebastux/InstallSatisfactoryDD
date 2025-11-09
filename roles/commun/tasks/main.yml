@@ -104,7 +104,10 @@
     state: absent
   loop: "{{ motd_files.files }}"
 
-- name: Suppression du MOTD dynamique.
-  ansible.builtin.shell: /run/motd.dynamic
-  args:
+- name: Suppression du MOTD.
+  ansible.builtin.shell:
+  args: "{{ item }}"
     executable: /bin/bash
+  loop:
+    - rm -f /run/motd.dynamic
+    - rm -f /etc/update-motd.d/*
