@@ -93,9 +93,10 @@
     enabled: false
 
 - name: Suppression du MOTD.
-  ansible.builtin.shell:
-  args: "{{ item }}"
+  ansible.builtin.shell: "{{ item }}"
+  args:
     executable: /bin/bash
   loop:
     - rm -f /run/motd.dynamic
     - rm -f /etc/update-motd.d/*
+
