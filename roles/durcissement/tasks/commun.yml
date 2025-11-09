@@ -4,3 +4,14 @@
     name: "{{ installe_packages }}"
     state: latest
     update_cache: true
+
+- name: Création d'une tache programmé de vérification des packages
+  ansible.builtin.cron:
+    name: "Verif_packages"
+    minute: "0"
+    hour: "5"
+    job: "debsums --all"
+    weekday: "SUN"
+    user: "root"
+    state: present
+    cron_file: verif_packages
