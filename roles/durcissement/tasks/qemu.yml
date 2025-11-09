@@ -1,0 +1,6 @@
+---
+- name: "Installation de l'ageent qemu."
+  ansible.builtin.apt:
+    name: qemu-guest-agent
+    state: latest
+    update_cache: false
