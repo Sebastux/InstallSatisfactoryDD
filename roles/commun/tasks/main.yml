@@ -73,7 +73,7 @@
     mode: 0644
     insertafter: EOF
     state: present
-    backup: yes
+    backup: true
 
 - name: Ajout d'une référence dans le fichier bashrc root.
   lineinfile:
@@ -84,4 +84,18 @@
     mode: 0644
     insertafter: EOF
     state: present
-    backup: yes
+    backup: true
+
+- name: Désactivation du service motd-news.
+  ansible.builtin.systemd_service:
+    name: motd-news.timer
+    state: stopped
+    enabled: false
+
+- name: Suppression des fichiers motd.
+  ansible.builtin.file:
+    path:
+    state: absent
+  loop:
+    - /run/motd.dynamic
+    - /etc/update-motd.d/*
