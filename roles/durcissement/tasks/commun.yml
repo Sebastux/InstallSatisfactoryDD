@@ -24,6 +24,12 @@
     - hostnamectl set-hostname "{{ hostname_svr }}"
     - hostnamectl set-hostname --pretty "Serveur de jeu Satisfactory"
     - hostnamectl set-location "{{ location_svr }}"
+    - hostnamectl
+
+- name: Mise à jour des variables d'Ansible.
+  ansible.builtin.setup:
+    gather_subset:
+      - 'all'
 
 - name: Ajout de la résolution du nom.
   ansible.builtin.lineinfile:
