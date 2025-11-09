@@ -16,5 +16,5 @@ satisfactory_salt='SeBa5TuX59'
 fail2ban_ssh_whitelist=1.1.1.1
 
 # Gestion du hostname
-hostname_svr="tuxfactoryds.unsatifactoryds.local"
+hostname_svr="Team-Ginette.unsatifactoryds.local"
 location_svr="Lille - Haut de France"
