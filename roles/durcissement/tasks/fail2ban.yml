@@ -1,4 +1,9 @@
 ---
+- name: Vérification de la valeur de la whitelist.
+  ansible.builtin.fail:
+    msg: "Vous devez modifier la valeur par défaut de la variable fail2ban_ssh_whitelist dans le fichier inventaire."
+  when: fail2ban_ssh_whitelist == "1.1.1.1"
+
 - name: Création du répertoire de surcharge fail2ban.
   ansible.builtin.file:
     path: /etc/systemd/system/fail2ban.service.d
