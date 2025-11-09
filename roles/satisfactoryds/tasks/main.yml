@@ -1,4 +1,9 @@
 ---
+- name: Vérification du mot de passe.
+  ansible.builtin.fail:
+    msg: "Vous devez modifier le mot de passe par défaut."
+  when: satisfactory_passwd == "P@ssW0rd#2025"
+
 - name: Activation du dépôt multiverse
   ansible.builtin.apt_repository:
     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
@@ -62,6 +67,14 @@
   ansible.builtin.file:
     path: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
     state: absent
+
+- name: Création du répertoire de surcharge pour satisfactory.
+  ansible.builtin.file:
+    path: /etc/systemd/system/satisfactory.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: Copie des fichiers service satisfactory.
   ansible.builtin.template:
