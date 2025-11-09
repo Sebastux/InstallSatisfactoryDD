@@ -25,7 +25,7 @@
 
 - name: Durcissement de la politique des mots de passe.
   ansible.builtin.import_tasks:
-    file: loin_def.yml
+    file: login_def.yml
 
 - name: DÉsactivation de divers modules du noyau.
   ansible.builtin.import_tasks:
