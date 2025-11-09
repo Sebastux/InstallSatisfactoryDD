@@ -48,9 +48,17 @@
     - {fichier: 'ssh_chiffrement.j2', chemin: '/etc/ssh/sshd_config.d/91-crypto-policies.conf'}
     - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/ssh.service.d/durcissemnt.conf'}
 
+- name: Création du répertoire de stockage des clés ssh
+  ansible.builtin.file:
+    path: /root/cles_ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Création d'une clé SSH pour le compte utilisateur.
   community.crypto.openssh_keypair:
-    path: "{{ role_path }}/../../../cles_ssh/satisfactory-{{ ansible_hostname }}"
+    path: "/root/cles_ssh/satisfactory-{{ ansible_hostname }}"
     backend: cryptography
     comment: "Clé SSH générée par ansible."
     mode: '0600'
