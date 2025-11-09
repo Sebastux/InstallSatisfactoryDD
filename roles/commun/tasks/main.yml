@@ -92,18 +92,6 @@
     state: stopped
     enabled: false
 
-- name: Liste des fichiers MOTD
-  ansible.builtin.find:
-    paths: /etc/update-motd.d
-    patterns: '*'
-  register: motd_files
-
-- name: Suppression des fichiers MOTD
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    state: absent
-  loop: "{{ motd_files.files }}"
-
 - name: Suppression du MOTD.
   ansible.builtin.shell:
   args: "{{ item }}"
