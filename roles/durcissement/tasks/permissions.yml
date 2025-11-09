@@ -23,3 +23,8 @@
     - {chemin: /root, mode: '0700'}
     - {chemin: /usr/bin/as, mode: '700'}
     - {chemin: /bin/su, mode: '700'}
+    - {chemin: /usr/bin/gcc, mode: '700'}
+    - {chemin: /usr/bin/g++, mode: '700'}
+    - {chemin: /usr/bin/cc, mode: '700'}
+    - {chemin: /usr/bin/ld, mode: '700'}
+    - {chemin: /usr/bin/make, mode: '700'}
