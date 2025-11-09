@@ -3,6 +3,6 @@
   hosts: serveur
   gather_facts: true
   roles:
-    - commun
-    - durcissement
-    # - satisfactoryds
+    # - commun
+    # - durcissement
+    - satisfactoryds
