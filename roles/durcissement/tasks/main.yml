@@ -1,40 +1,11 @@
 ---
-- name: Désactivation de cloud-init.
-  ansible.builtin.systemd_service:
-    name: cloud-init
-    state: stopped
-    enabled: false
-    masked: true
-  ignore_errors: true
+- name: Nettoyage du serveur.
+  ansible.builtin.import_tasks:
+    file: nettoyage.yml
 
 - name: Installation des packages.
-  ansible.builtin.apt:
-    name: "{{ installe_packages }}"
-    state: latest
-    update_cache: true
-
-- name: Configurer les paramètres sysctl
-  sysctl:
-    name: "{{ item.key }}"
-    value: "{{ item.value }}"
-    state: present
-  with_items:
-    - {key: "dev.tty.ldisc_autoload", value: "0"}
-    - {key: "fs.protected_fifos", value: "2"}
-    - {key: "fs.suid_dumpable", value: "0"}
-    - {key: "kernel.core_uses_pid", value: "1"}
-    - {key: "kernel.kptr_restrict", value: "2"}
-    - {key: "kernel.perf_event_paranoid", value: "3"}
-    - {key: "kernel.sysrq", value: "0"}
-    - {key: "net.core.bpf_jit_harden", value: "2"}
-    - {key: "net.ipv4.conf.all.accept_redirects", value: "0"}
-    - {key: "net.ipv4.conf.all.log_martians", value: "1"}
-
-- name: Activation du dépôt multiverse
-  ansible.builtin.apt_repository:
-    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
-    state: present
-    update_cache: true
+  ansible.builtin.import_tasks:
+    file: commun.yml
 
 - name: Configuration du SSH.
   ansible.builtin.import_tasks:
@@ -48,6 +19,15 @@
   ansible.builtin.import_tasks:
     file: fail2ban.yml
 
+- name: Durcissement du noyau.
+  ansible.builtin.import_tasks:
+    file: kernel.yml
+
 - name: Configuration de l'unattended-upgrades.'
   ansible.builtin.import_tasks:
     file: unattended-upgrades.yml
+
+- name: Installation de packages proxmox.
+  ansible.builtin.import_tasks:
+    file: qemu.yml
+  when: ansible_system_vendor is search("QEMU")
