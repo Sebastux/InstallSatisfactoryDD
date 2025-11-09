@@ -1,0 +1,6 @@
+---
+- name: Installation des packages.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
