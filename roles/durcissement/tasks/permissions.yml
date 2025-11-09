@@ -6,8 +6,6 @@
     owner: root
     group: root
   loop:
-    - {chemin: /etc/at.deny, mode: '0600'}
-    - {chemin: /etc/cron.deny, mode: '0600'}
     - {chemin: /etc/crontab, mode: '0600'}
     - {chemin: /etc/cron.d, mode: '0700'}
     - {chemin: /etc/cron.daily, mode: '0700'}
@@ -24,5 +22,4 @@
     - {chemin: /etc/ssh/sshd_config.d, mode: '0750'}
     - {chemin: /root, mode: '0700'}
     - {chemin: /usr/bin/as, mode: '700'}
-    - {chemin: /usr/bin/ccache, mode: '700'}
     - {chemin: /bin/su, mode: '700'}
