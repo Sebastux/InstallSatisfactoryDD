@@ -27,9 +27,13 @@
   ansible.builtin.import_tasks:
     file: login_def.yml
 
-- name: DÉsactivation de divers modules du noyau.
+- name: Désactivation de divers modules du noyau.
   ansible.builtin.import_tasks:
     file: modprobe.yml
+
+- name: Vérification des permissions.
+  ansible.builtin.import_tasks:
+    file: permissions.yml
 
 - name: Configuration de l'unattended-upgrades.'
   ansible.builtin.import_tasks:
