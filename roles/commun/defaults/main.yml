@@ -1,6 +1,6 @@
 ---
 installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic', 'locate',
-                    'btop', 'bpytop', 'htop', 'iotop']
+                    'btop', 'bpytop', 'htop', 'iotop', 'neofetch']
 
 # Liste des serveurs NTP pour chrony.
 liste_serveur:
