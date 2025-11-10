@@ -1,6 +1,10 @@
 ---
-installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic', 'locate',
-                    'btop', 'bpytop', 'htop', 'iotop', 'neofetch']
+# Gestion de pacckages.
+installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic',
+                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch'.
+                    'systemd-zram-generator']
+
+kernel_package: ['linux-generic-hwe-24.04']
 
 # Liste des serveurs NTP pour chrony.
 liste_serveur:
