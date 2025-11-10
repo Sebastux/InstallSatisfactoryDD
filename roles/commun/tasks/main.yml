@@ -4,6 +4,8 @@
     name: "*"
     state: latest
     update_cache: true
+    autoremove: true
+    purge: true
   tags:
     - commun
     - maj
