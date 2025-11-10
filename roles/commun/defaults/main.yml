@@ -1,8 +1,7 @@
 ---
 # Gestion de pacckages.
 installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic',
-                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch'.
-                    'systemd-zram-generator']
+                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch']
 
 kernel_package: ['linux-generic-hwe-24.04']
 

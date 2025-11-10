@@ -17,6 +17,16 @@
     - commun
     - packages
 
+- name: Installation du noyau HWE.
+  ansible.builtin.apt:
+    name: "{{ kernel_package }}"
+    state: latest
+    update_cache: false
+    install_recommends: true
+  tags:
+    - commun
+    - packages
+
 - name: Configuration de la timezone.
   community.general.timezone:
     name: Europe/Paris
