@@ -4,16 +4,22 @@
     name: "*"
     state: latest
     update_cache: true
+  tags:
+    - commun
 
 - name: Installation des packages.
   ansible.builtin.apt:
     name: "{{ installe_packages }}"
     state: latest
     update_cache: true
+  tags:
+    - commun
 
 - name: Configuration de la timezone.
   community.general.timezone:
     name: Europe/Paris
+  tags:
+    - commun
 
 - name: Création du répertoire de surcharge pour chrony.
   ansible.builtin.file:
@@ -22,6 +28,8 @@
     owner: root
     group: root
     mode: '0755'
+  tags:
+    - commun
 
 - name: Configuration de chrony.
   ansible.builtin.template:
@@ -34,12 +42,16 @@
   loop:
     - {fichier: 'chrony.j2', chemin: '/etc/chrony/chrony.conf'}
     - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/chrony.service.d/durcissemnt.conf'}
+  tags:
+    - commun
 
 - name: Redémarrage du service chrony.
   ansible.builtin.systemd_service:
     name: chrony
     state: restarted
     enabled: true
+  tags:
+    - commun
 
 - name: Création des répertoires pour les alias, du répertoire d'ansible.
   file:
@@ -51,6 +63,8 @@
   loop:
     - {chemin: '/root/.alias', mode: '0644'}
     - {chemin: '/etc/skel/.alias', mode: '0755'}
+  tags:
+    - commun
 
 - name: Copie des templates d'alias.
   template:
@@ -63,6 +77,8 @@
   loop:
     - {fichier: 'alias_utilisateur.j2', chemin: '/etc/skel/.alias/alias.txt', sauve: 'no'}
     - {fichier: 'alias_root.j2', chemin: '/root/.alias/alias.txt', sauve: 'no'}
+  tags:
+    - commun
 
 - name: Ajout d'une référence dans le fichier bashrc utilisateurs.
   lineinfile:
@@ -74,6 +90,8 @@
     insertafter: EOF
     state: present
     backup: true
+  tags:
+    - commun
 
 - name: Ajout d'une référence dans le fichier bashrc root.
   lineinfile:
@@ -85,12 +103,16 @@
     insertafter: EOF
     state: present
     backup: true
+  tags:
+    - commun
 
 - name: Désactivation du service motd-news.
   ansible.builtin.systemd_service:
     name: motd-news.timer
     state: stopped
     enabled: false
+  tags:
+    - commun
 
 - name: Suppression du MOTD.
   ansible.builtin.shell: "{{ item }}"
@@ -99,4 +121,5 @@
   loop:
     - rm -f /run/motd.dynamic
     - rm -f /etc/update-motd.d/*
-
+  tags:
+    - commun
