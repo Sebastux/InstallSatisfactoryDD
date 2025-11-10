@@ -45,11 +45,16 @@ Liste et description des variables configurables du rôle.
 | hostname_svr           | Nom d'hôte de la machine qui sera appliqué par le rôle.    | Team-Ginette.unsatifactoryds.local |
 | location_svr           | Localisation du serveur.                                   | "Lille - Haut de France"           |
 
+## Fail2ban
+
+Fail2ban est un service analysant en temps réel les journaux d’événement de divers services (SSH, Apache, FTP, entre autres) à la recherche de comportements malveillants et permet d'exécuter une ou plusieurs actions lorsqu'un événement malveillant est détecté.
+Ces comportements malveillants sont définis par des filtres. Typiquement, un nombre élevé et répété de tentatives infructueuses de connexion provenant d'une même machine[^1].
+
 ## Exécution
 
 Se connecter sur le serveur et passer en root avec la commande sudo -i.
 Installer le méta package git-all.
-Lancer le script et attendre la fin de l'exécution.
+Lancer le script config.sh pour installer les packages nécessaires.
 
 ```bash
 sudo -i
@@ -57,7 +62,9 @@ apt-get update
 apt-get -y install git-all
 git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
 cd InstallSatisfactoryDD
-./install.sh
+./config.sh
+make install
+make run
 ```
 
 ## Ressources
@@ -79,3 +86,5 @@ The unlicense
 
   - Création du rôle.
   - Installation et configuration de la version 1.1 de satisfactory sur Ubuntu 24.04.
+
+[^1]: Source [Wikipédia](https://fr.wikipedia.org/wiki/Fail2ban)
