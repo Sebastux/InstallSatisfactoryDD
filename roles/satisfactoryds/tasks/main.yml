@@ -75,6 +75,8 @@
     owner: root
     group: root
     mode: '0755'
+  tags:
+    - satisds
 
 - name: Copie des fichiers service satisfactory.
   ansible.builtin.template:
@@ -87,10 +89,14 @@
   loop:
     - {fichier: 'satis_service.j2', chemin: '/etc/systemd/system/satisfactory.service'}
     - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/satisfactory.service.d/durcissemnt.conf'}
+  tags:
+    - satisds
 
 - name: Prise en compte du nouveau fichier de service.
   ansible.builtin.systemd_service:
     daemon-reload: true
+  tags:
+    - satisds
 
 - name: Copie du fichier de règle du pare-feu.
   ansible.builtin.copy:
@@ -99,6 +105,8 @@
     owner: root
     group: root
     mode: '0644'
+  tags:
+    - satisds
 
 - name: Redémarrage du pare-feu.
   ansible.builtin.systemd_service:
@@ -106,6 +114,8 @@
     state: restarted
     enabled: true
     daemon-reload: true
+  tags:
+    - satisds
 
 - name: Ouverture des ports du serveur satisfactory.
   ansible.posix.firewalld:
@@ -113,9 +123,13 @@
     permanent: true
     state: enabled
     immediate: true
+  tags:
+    - satisds
 
 - name: Démarrage du service Satisfactory.
   ansible.builtin.systemd_service:
     name: satisfactory
     state: started
     enabled: true
+  tags:
+    - satisds
