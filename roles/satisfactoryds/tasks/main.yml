@@ -3,28 +3,39 @@
   ansible.builtin.fail:
     msg: "Vous devez modifier le mot de passe par défaut."
   when: satisfactory_passwd == "P@ssW0rd#2025"
+  tags:
+    - satisds
+    - always
 
 - name: Activation du dépôt multiverse
   ansible.builtin.apt_repository:
     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
     state: present
     update_cache: true
+  tags:
+    - satisds
 
 - name: Activation de l'architecture 32 bits.
   ansible.builtin.shell:
     cmd: dpkg --add-architecture i386
     executable: /bin/bash
+  tags:
+    - satisds
 
 - name: Accepter la licence Steam.
   ansible.builtin.shell: |
     echo steam steam/question select "I AGREE" | debconf-set-selections
     echo steam steam/license note '' | debconf-set-selections
+  tags:
+    - satisds
 
 - name: Installation de steamcmd.
   ansible.builtin.apt:
     name: steamcmd
     state: present
     update_cache: true
+  tags:
+    - satisds
 
 - name: "Création du compte de service {{ compte_satisfactory }}."
   ansible.builtin.user:
@@ -36,6 +47,8 @@
     create_home: true
     comment: "Compte applicatif satisfactory."
     system: true
+  tags:
+    - satisds
 
 - name: Création du répertoire de stockage du jeu.
   ansible.builtin.file:
@@ -45,6 +58,8 @@
     group: "{{ compte_satisfactory }}"
     mode: '0755'
     recurse: true
+  tags:
+    - satisds
 
 - name: Copie du script d'installation du serveur.
   ansible.builtin.template:
@@ -54,6 +69,8 @@
     group: "{{ compte_satisfactory }}"
     mode: '0700'
     backup: false
+  tags:
+    - satisds
 
 - name: Installation du serveur satisfactory.
   ansible.builtin.shell:
@@ -62,11 +79,15 @@
   become: true
   become_user: "{{ compte_satisfactory }}"
   become_method: su
+  tags:
+    - satisds
 
 - name: Suppression du script d'installation du serveur.
   ansible.builtin.file:
     path: "/home/{{ compte_satisfactory }}/steam/install_satis.sh"
     state: absent
+  tags:
+    - satisds
 
 - name: Création du répertoire de surcharge pour satisfactory.
   ansible.builtin.file:
