@@ -2,44 +2,76 @@
 - name: Nettoyage du serveur.
   ansible.builtin.import_tasks:
     file: nettoyage.yml
+  tags:
+    - durcissement
 
 - name: Installation des packages.
   ansible.builtin.import_tasks:
     file: commun.yml
+  tags:
+    - durcissement
 
 - name: Configuration du SSH.
   ansible.builtin.import_tasks:
     file: ssh.yml
+  tags:
+    - durcissement
+    - ssh
 
 - name: Configuration du pare-feu.
   ansible.builtin.import_tasks:
     file: firewalld.yml
+  tags:
+    - durcissement
+    - firewalld
 
 - name: Configuration de fail2ban.
   ansible.builtin.import_tasks:
     file: fail2ban.yml
+  tags:
+    - durcissement
+    - fail2ban
 
 - name: Durcissement du noyau.
   ansible.builtin.import_tasks:
     file: kernel.yml
+  tags:
+    - durcissement
+    - kernel
 
 - name: Durcissement de la politique des mots de passe.
   ansible.builtin.import_tasks:
     file: login_def.yml
+  tags:
+    - durcissement
+    - passwd
 
 - name: Désactivation de divers modules du noyau.
   ansible.builtin.import_tasks:
     file: modprobe.yml
+  tags:
+    - durcissement
+    - modules
 
 - name: Vérification des permissions.
   ansible.builtin.import_tasks:
     file: permissions.yml
+  tags:
+    - durcissement
+    - permissions
 
 - name: Configuration de l'unattended-upgrades.'
   ansible.builtin.import_tasks:
     file: unattended-upgrades.yml
+  tags:
+    - durcissement
+    - maj
+    - unattended
 
 - name: Installation de packages proxmox.
   ansible.builtin.import_tasks:
     file: qemu.yml
   when: ansible_system_vendor is search("QEMU")
+  tags:
+    - durcissement
+    - proxmox

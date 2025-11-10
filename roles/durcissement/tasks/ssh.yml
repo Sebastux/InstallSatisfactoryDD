@@ -34,6 +34,8 @@
     owner: root
     group: root
     mode: '0755'
+  tags:
+    - config
 
 - name: Configuration du ssh.
   ansible.builtin.template:
@@ -47,6 +49,8 @@
     - {fichier: 'sshd_config_modif.j2', chemin: '/etc/ssh/sshd_config.d/90-sshd_config_modif.conf'}
     - {fichier: 'ssh_chiffrement.j2', chemin: '/etc/ssh/sshd_config.d/91-crypto-policies.conf'}
     - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/ssh.service.d/durcissemnt.conf'}
+  tags:
+    - config
 
 - name: Création du répertoire de stockage des clés ssh
   ansible.builtin.file:
@@ -55,6 +59,8 @@
     owner: root
     group: root
     mode: '0755'
+  tags:
+    - genkey
 
 - name: Création d'une clé SSH pour le compte utilisateur.
   community.crypto.openssh_keypair:
@@ -66,3 +72,5 @@
     state: present
     type: ed25519
   delegate_to: localhost
+  tags:
+    - genkey
