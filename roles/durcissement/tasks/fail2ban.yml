@@ -13,6 +13,8 @@
     owner: root
     group: root
     mode: '0755'
+  tags:
+    - config
 
 - name: Installation de la configuration de fail2ban.
   ansible.builtin.template:
@@ -26,6 +28,8 @@
     - {fichier: 'fail2ban.j2', chemin: '/etc/fail2ban/jail.local'}
     - {fichier: 'fail2ban-ssh.j2', chemin: '/etc/fail2ban/jail.d/01-sshd.local'}
     - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/fail2ban.service.d/durcissemnt.conf'}
+  tags:
+    - config
 
 - name: Active fail2ban au démarrage.
   ansible.builtin.systemd_service:
@@ -33,3 +37,5 @@
     enabled: true
     daemon-reload: true
     state: restarted
+  tags:
+    - config
