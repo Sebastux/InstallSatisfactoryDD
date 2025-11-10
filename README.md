@@ -6,22 +6,21 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 
 - [Pré-requis](#Pré-requis)
 - [Variables](#variables)
-- [Utilisation](#utilisation)
-- [Execution](#execution)
+- [Execution](#Exécution)
 - [Ressources](#ressources)
 - [Licence](#licence)
 - [Auteur](#auteurs)
 
 ## Pré-requis
 
-### logiciel
+### Logiciel
 Liste des conditions nécessaires pour utiliser ce rôle :  
-- Version ansible      : 12.1.0
-- Version ansible-core : 2.19.3
+- Version ansible      : 12.1.0 ou supérieur
+- Version ansible-core : 2.19.3 ou supérieur
 - Systèmes supportés   : Ubuntu server 24.04.
 - Droits nécessaires   : sudo
 
-### materiel
+### Matériel
 - Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.<br/>
 Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur.<br/>
 Tout processeur avec un indice de thread unique de 2000 ou supérieur devrait fonctionner.<br/>
@@ -37,24 +36,16 @@ S'il s'agit d'une machine virtuelle (VM) (un VPS en est certainement un), un pro
 
 Liste et description des variables configurables du rôle.
 
-| Variable      | Description                             | Valeur par défaut |
-|---------------|-----------------------------------------|-------------------|
-| compte_satisfactory    | Nom du compte utilisateur satisfactory  | `satisfactorydd`  |
-| satisfactory_passwd | Mot de passe du compte utilisateur satisfactory    | `P@ssW0rd#2025`   |
-| fail2ban_ssh_whitelist | Liste d'IP à ne pas bannir par fail2ban | `192.168.0.10`    |
+| Variable               | Description                                                | Valeur par défaut                  |
+| ---------------------- | ---------------------------------------------------------- | ---------------------------------- |
+| compte_satisfactory    | Nom du compte utilisateur satisfactory.                    | `satisfactorydd`                   |
+| satisfactory_passwd    | Mot de passe du compte utilisateur satisfactory.           | `P@ssW0rd#2025`                    |
+| satisfactory_salt      | Chaine de caractères permettant le salage de mot de passe. | 'SeBa5TuX59'                       |
+| fail2ban_ssh_whitelist | Liste d'IP à ne pas bannir par fail2ban.                   | 1.1.1.1                            |
+| hostname_svr           | Nom d'hôte de la machine qui sera appliqué par le rôle.    | Team-Ginette.unsatifactoryds.local |
+| location_svr           | Localisation du serveur.                                   | "Lille - Haut de France"           |
 
-## Utilisation
-
-Comment inclure ce rôle dans un playbook.
-
-```yaml
-- hosts: your_hosts
-  become: yes
-  roles:
-    - role: satisfactorydd
-```
-
-## Execution
+## Exécution
 
 Se connecter sur le serveur et passer en root avec la commande sudo -i.
 Installer le méta package git-all.
