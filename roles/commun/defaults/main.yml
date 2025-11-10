@@ -1,7 +1,8 @@
 ---
 # Gestion de pacckages.
 installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic',
-                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch']
+                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch',
+                    'curl', 'wget', 'git-all', 'aptitude']
 
 kernel_package: ['linux-generic-hwe-24.04']
 
