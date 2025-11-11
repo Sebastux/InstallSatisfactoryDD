@@ -55,8 +55,12 @@ Fail2ban est installé afin de bloquer toute attaque de type brut force. Ce type
 Si une attaque de ce type est détectée, Fail2ban va bannir l'adresse IP de l'attaquant et donc empêcher toute tentative de connexion à la machine.
 Pour éviter d'être considéré comme un attaquant en cas d'erreur de connexion, vous devez modifier la valeur de la variable fail2ban_ssh_whitelist située dans le fichier production/inventory.
 Si cette valeur n'est pas modifiée, cela fera échouer l'installation.
+
 Lorsque le serveur est hébergé chez vous (il est branché sur votre box internet), vous devez mettre l'adresse d'une ou de plusieurs machines qui se connectent en SSH sur le serveur Satisfactory.
 Si vous ajoutez plusieurs adresses, elles doivent être séparées par un espace. Il est aussi possible d'ajouter plusieurs adresses en utilisant la forme 192.168.0.0/224.
+
+Lorsque vous utilisez un serveur distant comme un VPS par exemple, vous devez utiliser l'adresse IP de votre box internet, peu importe le nombre de PC qui se connecte en SSH depuis chez vous.
+Pour connaitre votre adresse IP, vous devez consulter votre opérateur internet ou vous rendre sur un site comme [celui-ci](https://www.mon-ip.com/). Récupérez l'adresse **IP V4** et ajoutez là dans le fichier, vous pouvez ajouter l'adresse IP d'autre personne si vous le souhaitez.
 ## Exécution
 
 Se connecter sur le serveur et passer en root avec la commande sudo -i.
