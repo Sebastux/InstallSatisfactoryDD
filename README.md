@@ -45,7 +45,6 @@ Liste et description des variables configurables du rôle.
 | fail2ban_ssh_whitelist | Liste d'IP à ne pas bannir par fail2ban.                   | 1.1.1.1                            |
 | hostname_svr           | Nom d'hôte de la machine qui sera appliqué par le rôle.    | Team-Ginette.unsatifactoryds.local |
 | location_svr           | Localisation du serveur.                                   | Lille - Haut de France             |
-
 ## Fail2ban
 
 Fail2ban est un service analysant en temps réel les journaux d’événement de divers services (SSH, Apache, FTP, entre autres) à la recherche de comportements malveillants et permet d'exécuter une ou plusieurs actions lorsqu'un événement malveillant est détecté.
@@ -61,6 +60,41 @@ Si vous ajoutez plusieurs adresses, elles doivent être séparées par un espace
 
 Lorsque vous utilisez un serveur distant comme un VPS par exemple, vous devez utiliser l'adresse IP de votre box internet, peu importe le nombre de PC qui se connecte en SSH depuis chez vous.
 Pour connaitre votre adresse IP, vous devez consulter votre opérateur internet ou vous rendre sur un site comme [celui-ci](https://www.mon-ip.com/). Récupérez l'adresse **IP V4** et ajoutez là dans le fichier, vous pouvez ajouter l'adresse IP d'autre personne si vous le souhaitez.
+
+## SSH
+
+Le rôle de durcissement configure le serveur SSH pour interdire la connexion en utilisant un mot de passe. Il crée une paire de clés dans le répertoire /root/cles_ssh.
+Cette paire de clés permet de se connecter au serveur sans avoir besoin de mot de passe.
+Vous devez installer la clé publique sur votre compte utilisateur, afin de pouvoir vous connecter sur le serveur.
+Voici la procédure à suivre pour installer la clé sur votre compte utilisateur.
+
+Commencez par copier le répertoire sur votre compte utilisateur avec la commande suivante :
+```bash
+sudo cp -r /root/cles_ssh .
+```
+
+ATTENTION : vérifiez bien qu'après le répertoire cles_ssh il y ait bien un espace suivi d'un point. C'est un raccourci permettant de copier le répertoire cles_ssh dans le répertoire dans lequel vous vous trouvez.
+
+Récupérez la propriété de répertoire grâce à la commande suivante :
+
+```bash
+sudo chown -R <nom de votre compte>: ./cles_ssh/
+```
+
+Exemple :
+
+```bash
+sudo chown -R toto: ./cles_ssh/
+```
+
+
+
+
+
+
+
+https://www.it-connect.fr/comment-utiliser-le-client-ssh-natif-de-windows-10/
+
 ## Exécution
 
 Se connecter sur le serveur et passer en root avec la commande sudo -i.
@@ -68,14 +102,13 @@ Installer le méta package git-all.
 Lancer le script config.sh pour installer les packages nécessaires.
 
 ```bash
-sudo -i
-apt-get update
-apt-get -y install git-all
+sudo apt-get update
+sudo apt-get -y install git-all
 git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
 cd InstallSatisfactoryDD
-./config.sh
+sudo ./config.sh
 make install
-make run
+sudo make run
 ```
 
 ## Ressources
