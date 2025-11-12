@@ -74,3 +74,13 @@
   delegate_to: localhost
   tags:
     - genkey
+
+- name: Installation de la clé pour le compte root.
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '/root/cles_ssh/satisfactory-{{ ansible_hostname }}.pub') }}"
+    comment: "Clé SSH générée par ansible pour le serveur {{ ansible_hostname }}."
+    manage_dir: true
+  tags:
+    - genkey
