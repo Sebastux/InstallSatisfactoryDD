@@ -48,9 +48,11 @@ Liste et description des variables configurables du rôle.
 
 ## Exécution
 
-Se connecter sur le serveur et passer en root avec la commande sudo -i.
-Installer le méta package git-all.
-Lancer le script config.sh pour installer les packages nécessaires.
+Se connecter sur le serveur avec un compte utilisateur ayant les droits sudo.
+Pour vérifier, vous pouvez utiliser la commande sudo -l
+Installer le méta package git pour pouvoir cloner le dépôt.
+Lancer le script config.sh pour installer les packages nécessaires à l'utilisation.
+Suivez les instructions en fin d'exécution du script.
 
 ```bash
 sudo apt-get update
@@ -120,10 +122,10 @@ Téléchargez ensuite le répertoire sur être PC de jeu et installez la clé pr
 
 ## Licence
 
-The unlicense
+[The unlicense](https://milvus.io/ai-quick-reference/how-does-the-unlicense-work-for-public-domain-software)
 
 ## Auteur
-- Sébastux
+[Sébastux](https://github.com/Sebastux)
 
 ## Versions
 
