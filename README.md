@@ -45,6 +45,23 @@ Liste et description des variables configurables du rôle.
 | fail2ban_ssh_whitelist | Liste d'IP à ne pas bannir par fail2ban.                   | 1.1.1.1                            |
 | hostname_svr           | Nom d'hôte de la machine qui sera appliqué par le rôle.    | Team-Ginette.unsatifactoryds.local |
 | location_svr           | Localisation du serveur.                                   | Lille - Haut de France             |
+
+## Exécution
+
+Se connecter sur le serveur et passer en root avec la commande sudo -i.
+Installer le méta package git-all.
+Lancer le script config.sh pour installer les packages nécessaires.
+
+```bash
+sudo apt-get update
+sudo apt-get -y install git-all
+git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
+cd InstallSatisfactoryDD
+sudo ./config.sh
+make install
+sudo make run
+```
+
 ## Fail2ban
 
 Fail2ban est un service analysant en temps réel les journaux d’événement de divers services (SSH, Apache, FTP, entre autres) à la recherche de comportements malveillants et permet d'exécuter une ou plusieurs actions lorsqu'un événement malveillant est détecté.
@@ -87,29 +104,13 @@ Exemple :
 sudo chown -R toto: ./cles_ssh/
 ```
 
-
-
-
-
-
-
-https://www.it-connect.fr/comment-utiliser-le-client-ssh-natif-de-windows-10/
-
-## Exécution
-
-Se connecter sur le serveur et passer en root avec la commande sudo -i.
-Installer le méta package git-all.
-Lancer le script config.sh pour installer les packages nécessaires.
+Si vous regardez à l'intérieur du répertoire, vous devriez voir 2 fichiers. Le premier fichier n'a pas d'extension et le second possède l'extension ".pub".
+Ce fichier contient la clé publique et doit être installé sur le compte de connexion grâce à la commande suivante :
 
 ```bash
-sudo apt-get update
-sudo apt-get -y install git-all
-git clone https://github.com/Sebastux/InstallSatisfactoryDD.git
-cd InstallSatisfactoryDD
-sudo ./config.sh
-make install
-sudo make run
+cat ./cles_ssh/<nom du fichier.pub> >> ~/.ssh/authorized_keys && echo "Clé copié."
 ```
+Téléchargez ensuite le répertoire sur être PC de jeu et installez la clé privée (le fichier sans extension) sur celui-ci. Vous avez pour cela la possibilité d’utiliser le client natif disponible sous PowerShell, pour cela rendez-vous [ici](https://www.it-connect.fr/comment-utiliser-le-client-ssh-natif-de-windows-10/). Vous pouvez aussi utiliser le client [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), celui-ci prend en charge les clés SSH Linux contrairement au client MobaXterm. Il est nécessaire de [convertir](https://robodk.com/doc/fr/Robots-KEBA-Utilisation-fichier-PPK-SFTP.html) la clé SSH au format PuTTY
 
 ## Ressources
 
