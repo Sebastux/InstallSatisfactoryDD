@@ -20,7 +20,7 @@ Liste des conditions nécessaires pour utiliser ce rôle :
 - Systèmes supportés : Ubuntu server 24.04.
 - Droits nécessaires : sudo
 
-### Matériel[^2]
+### Matériel[^1]
 
 - Un processeur Intel (i5-3570 ou supérieur) ou AMD (Ryzen 5 3600 ou supérieur) compatible x86-64, relativement récent.<br/>
 Le serveur utilise plusieurs cœurs, mais privilégie fortement les performances élevées d'un seul cœur.<br/>
@@ -132,6 +132,6 @@ The unlicense
   - Création du rôle.
   - Installation et configuration de la version 1.1 de satisfactory sur Ubuntu 24.04.
 
-[^1]: Source [Wikipédia](https://fr.wikipedia.org/wiki/Fail2ban)
 
-[^2]: La configuration matérielle est fournie par coffee stain studios sur le site officiel du jeu.
+[^1]: La configuration matérielle est fournie par coffee stain studios sur le site officiel du jeu.
+[^2]: Source [Wikipédia](https://fr.wikipedia.org/wiki/Fail2ban)
