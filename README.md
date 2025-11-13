@@ -65,7 +65,7 @@ sudo make run
 ## Fail2ban
 
 Fail2ban est un service analysant en temps réel les journaux d’événement de divers services (SSH, Apache, FTP, entre autres) à la recherche de comportements malveillants et permet d'exécuter une ou plusieurs actions lorsqu'un événement malveillant est détecté.
-Ces comportements malveillants sont définis par des filtres. Typiquement, un nombre élevé et répété de tentatives infructueuses de connexion provenant d'une même machine[^1].
+Ces comportements malveillants sont définis par des filtres. Typiquement, un nombre élevé et répété de tentatives infructueuses de connexion provenant d'une même machine[^2].
 
 Fail2ban est installé afin de bloquer toute attaque de type brut force. Ce type d'attaque consiste à tester des couples identifiant / mot de passe sur le service SSH.
 Si une attaque de ce type est détectée, Fail2ban va bannir l'adresse IP de l'attaquant et donc empêcher toute tentative de connexion à la machine.
