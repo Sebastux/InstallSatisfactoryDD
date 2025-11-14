@@ -5,7 +5,7 @@ PLAYBOOK ?= site.yml    # <-- Playbook par défaut
 PYTHON := python3
 
 # Environnement : staging (par défaut) ou production
-ENV ?= staging
+ENV ?= production
 
 # Options additionnelles
 TAGS ?=
