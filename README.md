@@ -204,7 +204,18 @@ Pour quitter le compte, vous pouvez soit utiliser la commande exit, soit la comb
 ## Versions
 
 ![alt text](https://img.shields.io/badge/version-V1.1.0-brightgreen.svg "Logo Version") (14/11/2025) :
-  -  Modularisation du code
+  -  Modularisation du code.
+  - Ajout d'un rôle du durcissement du système.
+  - Ajout d'un rôle commun permettant l'installation d'outils et de configuration divers.
+  - Ajout d'un rôle spécifique pour l'installation du serveur Satisfactory.
+  - Ajout de plusieurs tags permettant une granularité plus fine.
+  - Création d'un compte système pour l'installation du serveur Satisfactory.
+  - La connexion SSH nécessite obligatoirement une clé SSH.
+  - Une clé SSH est générée lors de la configuration du serveur SSH.
+  - L'installation ne se fait plus grâce au script bash mais grâce à un Makefile. La commande make nécessite les droits sudo.
+  - Mise à jour du fichier README.
+  - Amélioration de la configuration du service unuttended-upgrades. Les mises à jour et le reboot du serveur sont automatiques.
+  - Installation du noyau hwe afin d'avoir une meilleure compatibilité avec le matériel récent.
 
 ![alt text](https://img.shields.io/badge/version-V1.0.0-brightgreen.svg "Logo Version") (25/10/2025) :
   - Création du rôle.
