@@ -1,3 +1,3 @@
 ---
 # Variable pour les templates Jinja2
-ansible_managed = Ce fichier est généré par ansible. Toute modification de celui-ci sera définitivement perdu à la prochaine exécution du playbook sur cette machine.
+ansible_managed: "Ce fichier est généré par ansible. Toute modification de celui-ci sera définitivement perdu à la prochaine exécution du playbook sur cette machine."

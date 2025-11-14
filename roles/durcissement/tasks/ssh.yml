@@ -71,6 +71,5 @@
     regenerate: full_idempotence
     state: present
     type: ed25519
-  delegate_to: localhost
   tags:
     - genkey
