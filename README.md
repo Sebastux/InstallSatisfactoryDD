@@ -9,6 +9,8 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 - [Exécution](#Exécution)
 - [Fail2ban](#Fail2ban)
 - [SSH](#SSH)
+- [Durcissement](#Durcissement)
+- [Installation du serveur Satisfactory](#Installation du serveur Satisfactory)
 - [Ressources](#ressources)
 - [Licence](#licence)
 - [Auteur](#auteurs)
@@ -95,7 +97,7 @@ Commencez par copier le répertoire sur votre compte utilisateur avec la command
 sudo cp -r /root/cles_ssh $HOME
 ```
 
-`:information_source:` : "$HOME" est une variable d'environnement contenant le chemin du répertoire utilisateur.
+==INFORMATION== : "$HOME" est une variable d'environnement contenant le chemin du répertoire utilisateur.
 
 Récupérez la propriété de répertoire grâce à la commande suivante :
 
@@ -150,13 +152,38 @@ Cette commande va exécuter **l'intégralité** de la procédure de durcissement
 | temps        | Installe et configure le serveur de temps chrony afin de garder l'heure du serveur Ubuntu à jour. |
 | unattended   | Installe et configure le service de mise à jour automatique d'Ubuntu.                             |
 
+==INFORMATION== : Le durcissement obtient un score de 78 sur 100 sur le logiciel Lynis dans sa version 3.1.6-100. Aucun plugin n'a été utilisé.
+## Installation du serveur Satisfactory
 
+La procédure d'installation installe steamCMD et le serveur Satisfactory en utilisant un compte anonyme. Il n'est pas nécessaire d'utiliser votre compte Steam pour installer le serveur.
+Le compte anonyme permet l'installation complète du jeu pour une durée indéterminée (sauf changement de politique de valve ou de coffee stain studios).
+Un fichier propre à Linux permet de transformer le logiciel en service. Cela a pour avantage de lancer le serveur Satisfactory en arrière-plan lors du démarrage de la machine physique ou virtuelle.
+Le service redémarre automatiquement en cas de crash du serveur Satisfactory. Les mises à jour du serveur Satisfactory se font lors du redémarrage d'Ubuntu grâce à la commande suivante :
+
+```bash
+sudo reboot
+```
+
+La meilleure solution est de simplement redémarrer le service grâce à la commande suivante :
+
+```bash
+sudo systemctl restart satisfactory
+```
+
+Pour connaitre l'état du service Satisfactory, utilisez la commande suivante :
+
+```bash
+sudo systemctl status satisfactory
+```
+
+==INFORMATION== : Suite à un redémarrage du service, soyez patient, car le redémarrage peut être plus ou moins long en fonction de votre configuration matérielle. Le serveur effectue plusieurs tâches qui nécessitent parfois un redémarrage automatique du service.
 ## Ressources
 
 [Documentation officielle du wiki d'installation du serveur](https://satisfactory.wiki.gg/wiki/Dedicated_servers)
-
 [Documentation officielle d'installation de SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
-
+[Site officiel du développeur de Lynis](https://cisofy.com/lynis/)
+[Tuto IT-connect.fr](https://www.it-connect.fr/scan-de-votre-systeme-unix-avec-lynis/)
+[Tuto stephane-robert.info](https://blog.stephane-robert.info/docs/securiser/durcissement/lynis/)
 ## Licence
 
 [The unlicense](https://milvus.io/ai-quick-reference/how-does-the-unlicense-work-for-public-domain-software)
