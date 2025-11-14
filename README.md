@@ -6,10 +6,13 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 
 - [Pré-requis](#Pré-requis)
 - [Variables](#variables)
-- [Execution](#Exécution)
+- [Exécution](#Exécution)
+- [Fail2ban](#Fail2ban)
+- [SSH](#SSH)
 - [Ressources](#ressources)
 - [Licence](#licence)
 - [Auteur](#auteurs)
+- [Versions](#Versions)
 
 ## Pré-requis
 
