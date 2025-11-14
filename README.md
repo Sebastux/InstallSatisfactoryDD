@@ -152,7 +152,7 @@ Cette commande va exécuter **l'intégralité** de la procédure de durcissement
 | temps        | Installe et configure le serveur de temps chrony afin de garder l'heure du serveur Ubuntu à jour. |
 | unattended   | Installe et configure le service de mise à jour automatique d'Ubuntu.                             |
 
-==INFORMATION== : Le durcissement obtient un score de 78 sur 100 sur le logiciel Lynis dans sa version 3.1.6-100. Aucun plugin n'a été utilisé.
+*INFORMATION* : Le durcissement obtient un score de 78 sur 100 sur le logiciel Lynis dans sa version 3.1.6-100. Aucun plugin n'a été utilisé.
 ## Installation du serveur Satisfactory
 
 La procédure d'installation installe steamCMD et le serveur Satisfactory en utilisant un compte anonyme. Il n'est pas nécessaire d'utiliser votre compte Steam pour installer le serveur.
@@ -176,7 +176,17 @@ Pour connaitre l'état du service Satisfactory, utilisez la commande suivante :
 sudo systemctl status satisfactory
 ```
 
-==INFORMATION== : Suite à un redémarrage du service, soyez patient, car le redémarrage peut être plus ou moins long en fonction de votre configuration matérielle. Le serveur effectue plusieurs tâches qui nécessitent parfois un redémarrage automatique du service.
+*INFORMATION* : Suite à un redémarrage du service, soyez patient, car le redémarrage peut être plus ou moins long en fonction de votre configuration matérielle. Le serveur effectue plusieurs tâches qui nécessitent parfois un redémarrage automatique du service.
+
+Pour installer le serveur Satisfactory, l'installeur crée un compte système afin de stocker les fichiers du jeu. Ce compte n'est pas un compte utilisateur standard, cela veut dire qu'il n'est pas possible
+de s'y connecter depuis l'extérieur grâce à une connexion SSH. Il est par contre possible de s'y connecter depuis un compte utilisateur standard. Pour cela, récupérer l'identifiant et le mot de passe configuré dans le fichier inventaire (dans les variables "compte_satisfactory" et "satisfactory_passwd") puis entrez la commande suivante :
+
+```bash
+su - <identifiant du compte>
+```
+
+Entre su et l'identifiant du compte, n’oubliez pas le signe moins (disponible sur le pavé numérique ou sur la touche 6 au-dessus de la lettre T).
+Pour quitter le compte, vous pouvez soit utiliser la commande exit, soit la combinaison des touches CTRL+d.
 ## Ressources
 
 [Documentation officielle du wiki d'installation du serveur](https://satisfactory.wiki.gg/wiki/Dedicated_servers)
@@ -193,8 +203,10 @@ sudo systemctl status satisfactory
 
 ## Versions
 
-![alt text](https://img.shields.io/badge/version-v1.0.0-brightgreen.svg "Logo Version") (25/10/2024) :
+![alt text](https://img.shields.io/badge/version-V1.1.0-brightgreen.svg "Logo Version") (14/11/2025) :
+  -  Modularisation du code
 
+![alt text](https://img.shields.io/badge/version-V1.0.0-brightgreen.svg "Logo Version") (25/10/2025) :
   - Création du rôle.
   - Installation et configuration de la version 1.1 de satisfactory sur Ubuntu 24.04.
 
