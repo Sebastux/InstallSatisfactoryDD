@@ -92,30 +92,64 @@ Voici la procédure à suivre pour installer la clé sur votre compte utilisateu
 
 Commencez par copier le répertoire sur votre compte utilisateur avec la commande suivante :
 ```bash
-sudo cp -r /root/cles_ssh .
+sudo cp -r /root/cles_ssh $HOME
 ```
 
-ATTENTION : vérifiez bien qu'après le répertoire cles_ssh il y ait bien un espace suivi d'un point. C'est un raccourci permettant de copier le répertoire cles_ssh dans le répertoire dans lequel vous vous trouvez.
+`:information_source:` : "$HOME" est une variable d'environnement contenant le chemin du répertoire utilisateur.
 
 Récupérez la propriété de répertoire grâce à la commande suivante :
 
 ```bash
-sudo chown -R <nom de votre compte>: ./cles_ssh/
+sudo chown -R <nom de votre compte>: $HOME/cles_ssh/
 ```
 
 Exemple :
 
 ```bash
-sudo chown -R toto: ./cles_ssh/
+sudo chown -R toto: $HOME/cles_ssh/
 ```
 
 Si vous regardez à l'intérieur du répertoire, vous devriez voir 2 fichiers. Le premier fichier n'a pas d'extension et le second possède l'extension ".pub".
 Ce fichier contient la clé publique et doit être installé sur le compte de connexion grâce à la commande suivante :
 
 ```bash
-cat ./cles_ssh/<nom du fichier.pub> >> ~/.ssh/authorized_keys && echo "Clé copié."
+cat $HOME/cles_ssh/<nom du fichier.pub> >> ~/.ssh/authorized_keys && echo "Clé publique ajoutée."
 ```
+
+Exemple :
+
+```bash
+cat $HOME/cles_ssh/satisfactory-Team-Ginette.pub >> ~/.ssh/authorized_keys && echo "Clé publique ajoutée."
+```
+
 Téléchargez ensuite le répertoire sur être PC de jeu et installez la clé privée (le fichier sans extension) sur celui-ci. Vous avez pour cela la possibilité d’utiliser le client natif disponible sous PowerShell, pour cela rendez-vous [ici](https://www.it-connect.fr/comment-utiliser-le-client-ssh-natif-de-windows-10/). Vous pouvez aussi utiliser le client [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), celui-ci prend en charge les clés SSH Linux contrairement au client MobaXterm. Il est nécessaire de [convertir](https://robodk.com/doc/fr/Robots-KEBA-Utilisation-fichier-PPK-SFTP.html) la clé SSH au format PuTTY
+
+## Durcissement
+
+Pour un système d'exploitation, le durcissement consiste en une modification de plusieurs paramètres afin d'augmenter la sécurité de celui-ci. L'installation du serveur Satisfactory va exécuter plusieurs instructions permettant de durcir la sécurité d'Ubuntu serveur. Plusieurs fichiers de configurations vont être modifiés par ansible, ceux-ci verront leur première modifiée par un commentaire indiquant que celui-ci a été modifié par ansible. Si vous avez un doute sur le contenu de ce fichier (modification par une autre personne ou par un autre logiciel), rendez-vous dans le répertoire du script d'installation et utilisez la commande suivante :
+
+```bash
+sudo make run TAGS=durcissement
+```
+
+Cette commande va exécuter **l'intégralité** de la procédure de durcissement. Si vous souhaitez utiliser une partie spécifique du durcissement, voici la liste des mots clé à utiliser à la place de durcissement :
+
+
+| Mot clé      | Effets                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| durcissement | Durcissement de l'intégralité du système, nécessite un redémarrage de la machine.                 |
+| fail2ban     | Installe et configure le logiciel fail2ban.                                                       |
+| firewalld    | Installe et configure le pare-feu firewalld.                                                      |
+| hostname     | Modifie le nom d’hôte de la machine et réalise la résolution du nom.                              |
+| kernel       | Modifie certains paramètres du noyau Linux, nécessite un redémarrage de la machine.               |
+| maj          | Lance une mise à jour complète du système, nécessite un redémarrage de la machine.                |
+| modules      | Désactive certains "drivers" non utilisés par le système, nécessite un redémarrage de la machine. |
+| passwd       | Modifie la politique de complexité des mots de passe de compte utilisateur.                       |
+| permissions  | Réserve la permission de certains logiciels critique au compte administrateur (root)              |
+| ssh          | Configure le serveur SSH afin de désactiver les connexions par mot de passe                       |
+| temps        | Installe et configure le serveur de temps chrony afin de garder l'heure du serveur Ubuntu à jour. |
+| unattended   | Installe et configure le service de mise à jour automatique d'Ubuntu.                             |
+
 
 ## Ressources
 
