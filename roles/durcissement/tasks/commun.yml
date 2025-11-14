@@ -1,0 +1,55 @@
+---
+- name: Installation des packages du durcissement.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+  tags:
+    - packages
+
+- name: Création d'une tache programmé de vérification des packages
+  ansible.builtin.cron:
+    name: "Verif_packages"
+    minute: "0"
+    hour: "5"
+    job: "debsums --all"
+    weekday: "SUN"
+    user: "root"
+    state: present
+    cron_file: verif_packages
+  tags:
+    - packages
+    - maj
+
+- name: Modification du hostname de la machine.
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  loop:
+    - hostnamectl set-hostname "{{ hostname_svr }}"
+    - hostnamectl set-hostname --pretty "Serveur de jeu Satisfactory"
+    - hostnamectl set-location "{{ location_svr }}"
+    - hostnamectl
+  tags:
+    - hostname
+
+- name: Mise à jour des variables d'Ansible.
+  ansible.builtin.setup:
+    gather_subset:
+      - 'all'
+  tags:
+    - hostname
+
+- name: Ajout de la résolution du nom.
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^{{ ansible_default_ipv4.address | regex_escape }}'
+    line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
+    state: present
+    create: true
+    insertafter: "^127\\.0\\.0\\.1.*"
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - hostname

@@ -1,0 +1,7 @@
+---
+steam_packages: ['steamcmd:i386']
+
+# Information pour la création du compte applcatif (Valeurs par défaut)
+compte_satisfactory: satisfactoryds
+satisfactory_passwd: P@ssW0rd#2025
+satisfactory_salt: 'SeBa5TuX59'

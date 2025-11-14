@@ -1,0 +1,21 @@
+---
+- name: Configuration unattended-upgrades
+  template:
+    src: "{{ item.src }}"
+    dest: "/etc/apt/apt.conf.d/{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - {src: '50unattended-upgrades.j2', dest: '50unattended-upgrades'}
+    - {src: '20auto-upgrades.j2', dest: '20auto-upgrades'}
+  tags:
+    - config
+
+- name: Relancer unattended-upgrades
+  ansible.builtin.systemd_service:
+    name: unattended-upgrades
+    state: started
+  ignore_errors: true
+  tags:
+    - config

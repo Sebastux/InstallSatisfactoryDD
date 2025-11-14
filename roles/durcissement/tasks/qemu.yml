@@ -1,0 +1,6 @@
+---
+- name: Installation de l'agent qemu pour les VM Proxmox.
+  ansible.builtin.apt:
+    name: qemu-guest-agent
+    state: latest
+    update_cache: false

@@ -1,0 +1,16 @@
+---
+# Gestion de pacckages.
+installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic',
+                    'locate', 'btop', 'bpytop', 'htop', 'iotop', 'neofetch',
+                    'curl', 'wget', 'git-all', 'aptitude']
+
+kernel_package: ['linux-generic-hwe-24.04']
+
+# Liste des serveurs NTP pour chrony.
+liste_serveur:
+  - 0.fr.pool.ntp.org iburst
+  - 1.fr.pool.ntp.org iburst
+  - 2.fr.pool.ntp.org iburst
+  - 3.fr.pool.ntp.org iburst
+
+seq: ""

@@ -1,6 +1,8 @@
 ---
-- name: Installation et configuration de la machine.
+- name: Configuration et installation du serveur Satisfactory.
   hosts: serveur
-  gather_facts: yes
+  gather_facts: true
   roles:
-    - satisfactorydd
+    - commun
+    - durcissement
+    - satisfactoryds

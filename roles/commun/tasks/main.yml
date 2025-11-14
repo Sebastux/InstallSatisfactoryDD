@@ -1,0 +1,152 @@
+---
+- name: Mise à jour du système.
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+    autoremove: true
+    purge: true
+  tags:
+    - commun
+    - maj
+
+- name: Installation des packages commun.
+  ansible.builtin.apt:
+    name: "{{ installe_packages }}"
+    state: latest
+    update_cache: true
+  tags:
+    - commun
+    - packages
+
+- name: Installation du noyau HWE.
+  ansible.builtin.apt:
+    name: "{{ kernel_package }}"
+    state: latest
+    update_cache: false
+    install_recommends: true
+  tags:
+    - commun
+    - packages
+
+- name: Configuration de la timezone.
+  community.general.timezone:
+    name: Europe/Paris
+  tags:
+    - commun
+    - temps
+
+- name: Création du répertoire de surcharge pour chrony.
+  ansible.builtin.file:
+    path: /usr/lib/systemd/system/chrony.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags:
+    - commun
+    - temps
+    - config
+
+- name: Configuration de chrony.
+  ansible.builtin.template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - {fichier: 'chrony.j2', chemin: '/etc/chrony/chrony.conf'}
+    - {fichier: 'durcissemnt.j2', chemin: '/usr/lib/systemd/system/chrony.service.d/durcissemnt.conf'}
+  tags:
+    - commun
+    - temps
+    - config
+
+- name: Redémarrage du service chrony.
+  ansible.builtin.systemd_service:
+    name: chrony
+    state: restarted
+    enabled: true
+  tags:
+    - commun
+    - temps
+    - config
+
+- name: Création des répertoires pour les alias.
+  file:
+    path: "{{ item.chemin }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - {chemin: '/root/.alias', mode: '0644'}
+    - {chemin: '/etc/skel/.alias', mode: '0755'}
+  tags:
+    - commun
+    - alias
+
+- name: Copie des templates d'alias.
+  template:
+    src: "{{ item.fichier }}"
+    dest: "{{ item.chemin }}"
+    backup: "{{ item.sauve }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - {fichier: 'alias_utilisateur.j2', chemin: '/etc/skel/.alias/alias.txt', sauve: 'no'}
+    - {fichier: 'alias_root.j2', chemin: '/root/.alias/alias.txt', sauve: 'no'}
+  tags:
+    - commun
+    - alias
+
+- name: Ajout d'une référence dans le fichier bashrc utilisateurs.
+  lineinfile:
+    path: /etc/skel/.bashrc
+    line: 'source ~/.alias/alias.txt'
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: EOF
+    state: present
+    backup: true
+  tags:
+    - commun
+    - alias
+
+- name: Ajout d'une référence dans le fichier bashrc root.
+  lineinfile:
+    path: /root/.bashrc
+    line: 'source ~/.alias/alias.txt'
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: EOF
+    state: present
+    backup: true
+  tags:
+    - commun
+    - alias
+
+- name: Désactivation du service motd-news.
+  ansible.builtin.systemd_service:
+    name: motd-news.timer
+    state: stopped
+    enabled: false
+  tags:
+    - commun
+    - motd
+
+- name: Suppression du MOTD.
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  loop:
+    - rm -f /run/motd.dynamic
+    - rm -f /etc/update-motd.d/*
+  tags:
+    - commun
+    - motd

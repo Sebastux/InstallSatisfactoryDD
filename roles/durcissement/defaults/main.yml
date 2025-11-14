@@ -1,0 +1,7 @@
+---
+# Liste des paquets à installer pour le durcissement du système.
+installe_packages: ['fail2ban', 'firewalld', 'unattended-upgrades', 'libpam-tmpdir',
+                    'auditd', 'needrestart', 'libpam-passwdqc', 'debsums']
+
+# Liste d'adresses IP à ne pas bannir.
+fail2ban_ssh_whitelist: 1.1.1.1

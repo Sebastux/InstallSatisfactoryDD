@@ -1,0 +1,8 @@
+---
+- name: Désactivation de cloud-init.
+  ansible.builtin.systemd_service:
+    name: cloud-init
+    state: stopped
+    enabled: false
+    masked: true
+  ignore_errors: true

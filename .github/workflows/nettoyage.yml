@@ -1,0 +1,48 @@
+---
+name: Suppression des anciens workflows.
+run-name: ${{ github.actor }} nettoie ton workflow comme un pro.
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:  # Lancement manuel
+  workflow_call:      # Pour réutilisation dans d’autres repos
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: Suppression des anciens workflows (les 10 derniers)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          KEEP: 10
+        run: |
+          echo "Getting workflow runs for $REPO"
+          gh api -H "Accept: application/vnd.github+json" \
+            /repos/${REPO}/actions/runs \
+            --paginate \
+            --jq '.workflow_runs | .[].id' > all_runs.txt
+
+          TOTAL=$(wc -l < all_runs.txt)
+          echo "Total runs: $TOTAL"
+
+          if [ "$TOTAL" -le "$KEEP" ]; then
+            echo "Nothing to delete (runs <= keep)."
+            exit 0
+          fi
+
+          # Skip the most recent $KEEP runs
+          tail -n +$((KEEP + 1)) all_runs.txt > runs_to_delete.txt
+
+          while read run_id; do
+            echo "Deleting run $run_id"
+            gh api --method DELETE /repos/${REPO}/actions/runs/$run_id
+          done < runs_to_delete.txt

@@ -7,9 +7,14 @@ ansible_python_interpreter="/usr/bin/python3"
 ansible_user=root
 ansible_remote_user=root
 
-# Mot de passe par défaut du compte satisdd
+# Information pour la création du compte applcatif
 compte_satisfactory=satisfactoryds
-satisfactory_passwd=P@ssW0rd#2025
+satisfactory_passwd="P@ssW0rd#2026"
+satisfactory_salt='SeBa5TuX59'
 
 # Liste d'adresses IP à ne pas bannir.
 fail2ban_ssh_whitelist=192.168.0.10
+
+# Gestion du hostname
+hostname_svr="staging-serveur.unsatifactoryds.local"
+location_svr="Lille - Haut de France"

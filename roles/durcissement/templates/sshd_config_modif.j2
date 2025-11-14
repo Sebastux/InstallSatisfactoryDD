@@ -21,14 +21,14 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 LogLevel VERBOSE
 
 # Gestion de la connexion en root
-PermitRootLogin no
+PermitRootLogin prohibit-password
 
 # Nombre de tentative et de session
 MaxAuthTries 3
 MaxSessions 2
 
 # Gestion de la connexion par mot de passe
-PasswordAuthentication yes
+PasswordAuthentication no
 PermitEmptyPasswords no
 
 # Utilisation de PAM pour la gestion des comptes.
