@@ -1,5 +1,5 @@
 [serveur]
-ansible_host=localhost
+"Serveur Satisfactory" ansible_host=localhost
 
 [serveur:vars]
 ansible_connection=local 
