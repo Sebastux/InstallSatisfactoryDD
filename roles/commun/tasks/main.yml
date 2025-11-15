@@ -150,3 +150,11 @@
   tags:
     - commun
     - motd
+
+- name: Installation de packages proxmox.
+  ansible.builtin.import_tasks:
+    file: qemu.yml
+  when: ansible_system_vendor is search("QEMU")
+  tags:
+    - commun
+    - proxmox

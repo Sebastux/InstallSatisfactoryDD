@@ -4,3 +4,9 @@
     name: qemu-guest-agent
     state: latest
     update_cache: false
+
+- name: Démarrage de l'agent qemu.
+  ansible.builtin.systemd_service:
+    name: qemu-guest-agent
+    state: restarted
+    enabled: true
