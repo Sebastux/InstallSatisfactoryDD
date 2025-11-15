@@ -70,6 +70,7 @@
     group: root
     mode: '0644'
     backup: false
+  ignore_errors: true
   tags:
     - config
 
