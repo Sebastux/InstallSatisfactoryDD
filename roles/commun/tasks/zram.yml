@@ -54,26 +54,6 @@
   tags:
     - config
 
-- name: Réinitialisation du device.
-  ansible.builtin.shell: tee /sys/block/zram0/reset
-  args:
-    executable: /bin/bash
-  ignore_errors: true
-  tags:
-    - config
-
-- name: "Configuration de l'algorithme de compression."
-  ansible.builtin.copy:
-    dest: "/sys/block/zram0/comp_algorithm"
-    content: zstd
-    owner: root
-    group: root
-    mode: '0644'
-    backup: false
-  ignore_errors: true
-  tags:
-    - config
-
 - name: Redémarrage du service zramswap.
   ansible.builtin.systemd_service:
     name: zramswap
