@@ -4,8 +4,8 @@ REQ_FILE := requirements.txt
 PLAYBOOK ?= site.yml    # <-- Playbook par défaut
 PYTHON := python3
 
-# Environnement : staging (par défaut) ou production
-ENV ?= production
+# Environnement : staging ou production
+ENV ?= staging
 
 # Options additionnelles
 TAGS ?=
@@ -79,4 +79,3 @@ help:
 	@echo "  make run EXTRA_VARS=\"key=value\"       - Passe des variables supplémentaires"
 	@echo "  make clean                            - Supprime le venv"
 	@echo "  make reinstall                        - Réinstalle tout proprement"
-
