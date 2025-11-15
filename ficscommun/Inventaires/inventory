@@ -13,7 +13,7 @@ satisfactory_passwd=P@ssW0rd#2025
 satisfactory_salt='SeBa5TuX59'
 
 # Liste d'adresses IP à ne pas bannir.
-fail2ban_ssh_whitelist=1.1.1.1
+fail2ban_ssh_whitelist=1.1.1.
 
 # Gestion du hostname
 hostname_svr="Team-Ginette.unsatifactoryds.local"
