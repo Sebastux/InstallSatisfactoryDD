@@ -10,7 +10,7 @@ Installation du serveur de jeu Satisfactory sur un serveur Ubuntu server 24.04.
 - [Fail2ban](#Fail2ban)
 - [SSH](#SSH)
 - [Durcissement](#Durcissement)
-- [Installation du serveur Satisfactory](#Installation du serveur Satisfactory)
+- [Installation](#Installation)
 - [Ressources](#ressources)
 - [Licence](#licence)
 - [Auteur](#auteurs)
@@ -153,7 +153,8 @@ Cette commande va exécuter **l'intégralité** de la procédure de durcissement
 | unattended   | Installe et configure le service de mise à jour automatique d'Ubuntu.                             |
 
 *INFORMATION* : Le durcissement obtient un score de 78 sur 100 sur le logiciel Lynis dans sa version 3.1.6-100. Aucun plugin n'a été utilisé.
-## Installation du serveur Satisfactory
+
+## Installation
 
 La procédure d'installation installe steamCMD et le serveur Satisfactory en utilisant un compte anonyme. Il n'est pas nécessaire d'utiliser votre compte Steam pour installer le serveur.
 Le compte anonyme permet l'installation complète du jeu pour une durée indéterminée (sauf changement de politique de valve ou de coffee stain studios).
@@ -187,6 +188,7 @@ su - <identifiant du compte>
 
 Entre su et l'identifiant du compte, n’oubliez pas le signe moins (disponible sur le pavé numérique ou sur la touche 6 au-dessus de la lettre T).
 Pour quitter le compte, vous pouvez soit utiliser la commande exit, soit la combinaison des touches CTRL+d.
+
 ## Ressources
 
 [Documentation officielle du wiki d'installation du serveur](https://satisfactory.wiki.gg/wiki/Dedicated_servers)
