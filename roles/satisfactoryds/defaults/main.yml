@@ -5,3 +5,6 @@ steam_packages: ['steamcmd:i386']
 compte_satisfactory: satisfactoryds
 satisfactory_passwd: P@ssW0rd#2025
 satisfactory_salt: 'SeBa5TuX59'
+
+# Branche d'installation du serveur Satisfactory$
+branche_stable: true

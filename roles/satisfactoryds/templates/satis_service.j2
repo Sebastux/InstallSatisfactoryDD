@@ -6,7 +6,11 @@ Wants=network-online.target
 After=syslog.target network.target nss-lookup.target network-online.target
 
 [Service]
+{% if branche_stable %}
 ExecStartPre=/usr/games/steamcmd +force_install_dir "/home/{{ compte_satisfactory }}/steam" +login anonymous +app_update 1690800 validate +quit
+{% else %}
+ExecStartPre=/usr/games/steamcmd +force_install_dir "/home/{{ compte_satisfactory }}/steam" +login anonymous +app_update 1690800 -beta experimental validate +quit
+{% endif %}
 ExecStart=/home/{{ compte_satisfactory }}/steam/FactoryServer.sh
 User={{ compte_satisfactory }}
 Group={{ compte_satisfactory }}

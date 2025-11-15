@@ -112,12 +112,14 @@
     - {fichier: 'durcissemnt.j2', chemin: '/etc/systemd/system/satisfactory.service.d/durcissemnt.conf'}
   tags:
     - satisds
+    - branche
 
 - name: Prise en compte du nouveau fichier de service.
   ansible.builtin.systemd_service:
     daemon-reload: true
   tags:
     - satisds
+    - branche
 
 - name: Copie du fichier de règle du pare-feu.
   ansible.builtin.copy:
@@ -153,7 +155,8 @@
 - name: Démarrage du service Satisfactory.
   ansible.builtin.systemd_service:
     name: satisfactory
-    state: started
+    state: restarted
     enabled: true
   tags:
     - satisds
+    - branche

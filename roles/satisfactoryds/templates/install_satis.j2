@@ -8,10 +8,16 @@
 # Description      : Installe le serveur satisfactory en utillisant steamcmd
 # Auteur           : Sébastux
 # Date             : 25/10/2025
-# Modification     : 25/10/2025
-# Version          : 1.00
+# Modification     : 15/11/2025
+# Version          : 1.1
 # Utilisation      : install_satis.sh
 # Notes            : Script lancé par ansible.
 #==============================================================================
 
+{% if branche_stable %}
+# Installation du serveur Satisfactory - Branche stable
 steamcmd +force_install_dir /home/{{ compte_satisfactory }}/steam +login anonymous +app_update 1690800 validate +quit
+{% else %}
+# Installation du serveur Satisfactory - Branche experimental
+steamcmd +force_install_dir ~/SatisfactoryDedicatedServer +login anonymous +app_update 1690800 -beta experimental validate +quit
+{% endif %}
