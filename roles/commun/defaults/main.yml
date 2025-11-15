@@ -6,6 +6,8 @@ installe_packages: ['chrony', 'vim', 'vim-doc', 'vim-scripts', 'vim-syntastic',
 
 kernel_package: ['linux-generic-hwe-24.04']
 
+zram_packages: ['zram-tools']
+
 # Liste des serveurs NTP pour chrony.
 liste_serveur:
   - 0.fr.pool.ntp.org iburst

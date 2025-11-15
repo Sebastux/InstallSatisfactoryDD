@@ -158,3 +158,20 @@
   tags:
     - commun
     - proxmox
+
+- name: Déterminer si Zram est requis
+  ansible.builtin.set_fact:
+    zram_should_be_enabled: >
+      {{ ansible_memtotal_mb < 16384 or 
+         (ansible_memtotal_mb < 32768 and 'nvme' not in ansible_devices.sda.model) }}
+  tags:
+    - commun
+    - zram
+
+- name: Installation de zram.
+  ansible.builtin.import_tasks:
+    file: zram.yml
+  when: zram_should_be_enabled
+  tags:
+    - commun
+    - zram

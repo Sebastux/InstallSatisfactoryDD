@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+# Configuration de l'algorithme de compression pour zram
+# Options sont: lzo, lz4, zstd, zlib
+ALGO=zstd
+
+# La taille de la swap zram est définie à 50% de la RAM totale
+PERCENT=50
+
+# Priorité de la swap zram a 100 pour etre préférée aux autres swaps
+PRIORITY=100

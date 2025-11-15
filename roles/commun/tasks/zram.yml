@@ -1,0 +1,82 @@
+---
+- name: Installation de zram.
+  ansible.builtin.package:
+    name: "{{ zram_packages }}"
+    state: latest
+  tags:
+    - packages
+
+- name: Arret du service zram.
+  ansible.builtin.systemd_service:
+    name: zramswap
+    state: stopped
+    enabled: false
+  tags:
+    - config
+
+- name: Création du répertoire de surcharge pour zramswap.
+  ansible.builtin.file:
+    path: /usr/lib/systemd/system/zramswap.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags:
+    - config
+
+- name: Installation du fichier de durcissement.
+  ansible.builtin.template:
+    src: durcissemnt.j2
+    dest: /usr/lib/systemd/system/zramswap.service.d/durcissemnt.conf
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - config
+
+- name: Configuration de zramswap.
+  ansible.builtin.template:
+    src: zramswap.j2
+    dest: /etc/default/zramswap
+    backup: false
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - config
+
+- name: Désactivation forcée de la swap.
+  ansible.builtin.shell: swapoff /dev/zram0 2>/dev/null || true
+  args:
+    executable: /bin/bash
+  ignore_errors: true
+  tags:
+    - config
+
+- name: Réinitialisation du device.
+  ansible.builtin.shell: tee /sys/block/zram0/reset
+  args:
+    executable: /bin/bash
+  ignore_errors: true
+  tags:
+    - config
+
+- name: "Configuration de l'algorithme de compression."
+  ansible.builtin.copy:
+    dest: "/sys/block/zram0/comp_algorithm"
+    content: zstd
+    owner: root
+    group: root
+    mode: '0644'
+    backup: false
+  tags:
+    - config
+
+- name: Redémarrage du service zramswap.
+  ansible.builtin.systemd_service:
+    name: zramswap
+    state: restarted
+    enabled: true
+  tags:
+    - config
