@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+# Surveillance de cron (planificateur de taches)
+check process Taches_programmées matching cron
+
+# Gestion du daemon
+start program = "/usr/bin/systemctl start crond"
+stop program = "/usr/bin/systemctl stop crond"
+restart program = "/usr/bin/systemctl restart crond"
+
+# Ajout du soft dans un groupe
+group moniteur

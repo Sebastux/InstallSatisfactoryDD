@@ -1,0 +1,112 @@
+---
+- name: Calcul du hash de sshd_config.
+  stat:
+    path: /etc/ssh/sshd_config
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: sshdconf
+
+- name: Calcul du hash de monitrc.
+  stat:
+    path: /etc/monitrc
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: monitrc
+
+- name: Calcul du hash de chrony.conf.
+  stat:
+    path: /etc/chrony.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: chronyd
+
+- name: Calcul du hash de smb.conf.
+  stat:
+    path: /etc/samba/smb.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: samba
+
+- name: Calcul du hash de krb5.conf.
+  stat:
+    path: /etc/krb5.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: krb5
+
+- name: Calcul du hash de named.conf.
+  stat:
+    path: /etc/named.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: dns
+
+- name: Calcul du hash de freshclam.conf.
+  stat:
+    path: /etc/freshclam.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: fclam
+
+- name: Calcul du hash de clamd.conf.
+  stat:
+    path: /etc/clamd.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: clamd
+
+- name: Calcul du hash de scan.conf.
+  stat:
+    path: /etc/clamd.d/scan.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: scanconf
+
+- name: Calcul du hash du fichier sudoers.
+  stat:
+    path: /etc/sudoers.d/administrastux
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: sudoers
+
+- name: Calcul du hash de monitorix.conf.
+  stat:
+    path: /etc/monitorix/monitorix.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: monitorix
+
+- name: Calcul du hash de waptserver.ini.
+  stat:
+    path: /opt/wapt/conf/waptserver.ini
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: wapt
+
+- name: Calcul du hash de glpi.conf.
+  stat:
+    path: /etc/httpd/conf.d/glpi.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: glpi
+
+- name: Calcul du hash de agent.cfg.
+  stat:
+    path: /etc/fusioninventory/agent.cfg
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: fusionagent
+
+- name: Calcul du hash de httpd.conf.
+  stat:
+    path: /etc/httpd/conf/httpd.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: httpd
+
+- name: Calcul du hash de httptux.conf.
+  stat:
+    path: /etc/httpd/conf.d/httptux.conf
+    checksum_algorithm: sha1
+    get_checksum: yes
+  register: httptux

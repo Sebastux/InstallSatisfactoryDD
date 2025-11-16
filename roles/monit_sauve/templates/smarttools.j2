@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+# Surveillance de l'état smart du disque
+check program Smart_test with path "/usr/sbin/smartctl -s on -a /dev/sda"
+
+# Condition de surveillance
+if status != 0 then alert
+
+# Ajout du soft dans un groupe
+group moniteur

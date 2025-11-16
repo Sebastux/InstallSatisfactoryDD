@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+# Surveillance du deamon clamd
+check process Antivirus with pidfile /var/run/clamd.service/clamd.pid
+
+start program = "/usr/bin/systemctl start clamd@scan"
+stop  program = "/usr/bin/systemctl stop clamd@scan"
+restart  program = "/usr/bin/systemctl restart clamd@scan"
+
+# Alerte
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group antivirus

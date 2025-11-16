@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+# Surveillance de service rsyslog
+check process Journaux_système matching rsyslogd
+
+# Gestion du daemon
+start program = "/usr/bin/systemctl start rsyslog.service"
+stop program = "/usr/bin/systemctl stop rsyslog.service"
+restart program = "/usr/bin/systemctl restart rsyslog.service"
+
+# Ajout du soft dans un groupe
+group moniteur

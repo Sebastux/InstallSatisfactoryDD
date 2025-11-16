@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+# Surveillance du fichier de config du deamon httpd
+check file httptux.conf with path /etc/httpd/conf.d/httptux.conf
+
+# Surveillance des permissions
+if failed permission 644 then unmonitor
+if failed uid root then unmonitor
+if failed gid root then unmonitor
+
+# Hash du fichier
+if failed checksum and expect the {{ httptux.stat.checksum }}
+then alert
+
+# Envoie d’une alerte si la somme SHA1 du fichier change
+if changed sha1 checksum then stop
+
+# Ajout dans un groupe
+group fichierconfig

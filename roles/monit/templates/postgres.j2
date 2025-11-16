@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+# Surveillance du fichier PID
+check process postgresql with pidfile /var/lib/pgsql/9.6/data/postmaster.pid
+
+# Commandes de gestion du processus
+start program = "/usr/bin/systemctl start postgresql-9.6"
+stop  program = "/usr/bin/systemctl stop postgresql-9.6"
+restart program = "/usr/bin/systemctl restart postgresql-9.6"
+
+if failed unixsocket /tmp/.s.PGSQL.5432 protocol pgsql then restart
+if failed unixsocket /tmp/.s.PGSQL.5432 protocol pgsql then alert
+# if failed host localhost port 5432 protocol pgsql then restart
+# if failed host localhost port 5432 protocol pgsql then alert
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group database

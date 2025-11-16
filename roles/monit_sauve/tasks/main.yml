@@ -1,0 +1,135 @@
+---
+- name: Installation des paquets requis
+  ansible.builtin.dnf:
+    name: "{{ liste_install }}"
+    state: latest
+
+- name: Ouverture des ports Monitorix et Monit dans le firewall
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: yes
+  loop:
+    - 8080/tcp
+    - "{{ port_ecoute }}/tcp"
+
+- name: Arrêt des services à monitorer
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: true
+  loop:
+    - monit
+
+- name: Installation du fichier de configuration Monitorix
+  ansible.builtin.template:
+    src: templates/monitorixconf.j2
+    dest: /etc/monitorix/monitorix.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: no
+  notify: restart monitorix
+  tags: config
+
+- name: Calcul des checksums pour la configuration supervisée
+  ansible.builtin.stat:
+    path: "{{ item }}"
+    checksum_algorithm: sha1
+    get_checksum: yes
+  loop:
+    - /etc/ssh/sshd_config
+    - /etc/monitrc
+    - /etc/chrony.conf
+    - /etc/monitorix/monitorix.conf
+    - /etc/fail2ban/jail.local
+  register: monitored_checksums
+  tags: config
+
+- name: Déploiement des templates de profils Monit
+  ansible.builtin.template:
+    src: "templates/{{ item.source }}"
+    dest: "/etc/{{ item.destination }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    backup: no
+  loop:
+    - {source: 'chronyc.j2' , destination: 'monit.d/chronyc.conf',  mode: '0644' }
+    - {source: 'chronyd.j2' , destination: 'monit.d/chronyd.conf',  mode: '0644' }
+    - {source: 'crond.j2' , destination: 'monit.d/crond.conf',      mode: '0644' }
+    - {source: 'chronyconf.j2' , destination: 'monit.d/chronyconf.conf', mode: '0644' }
+    - {source: 'free.j2' , destination: 'monit.d/free.conf',         mode: '0644' }
+    - {source: 'rsyslog.j2' , destination: 'monit.d/rsyslog.conf',   mode: '0644' }
+    - {source: 'smonitrc.j2' , destination: 'monit.d/monitrc.conf',  mode: '0644' }
+    - {source: 'sshd.j2' , destination: 'monit.d/sshd.conf',         mode: '0644' }
+    - {source: 'df.j2' , destination: 'monit.d/df.conf',             mode: '0644' }
+    - {source: 'machine.j2' , destination: 'monit.d/machine.conf',   mode: '0644' }
+    - {source: 'sensors.j2' , destination: 'monit.d/sensors.conf',   mode: '0644' }
+    - {source: 'sshdconfig.j2', destination: 'monit.d/sshdconfig.conf', mode: '0644' }
+    - {source: 'top.j2' , destination: 'monit.d/top.conf',           mode: '0644' }
+    - {source: 'monitrc.j2' , destination: 'monitrc',                mode: '0600' }
+    - {source: 'logmonit.j2' , destination: 'logrotate.d/monit',     mode: '0644' }
+    - {source: 'monitorix.j2' , destination: 'monit.d/monitorix.conf',mode: '0644' }
+    - {source: 'smonitorixconf.j2', destination: 'monit.d/monitorixconf.conf', mode: '0644' }
+    - {source: 'jailconf.j2' , destination: 'monit.d/jailconf.conf', mode: '0644' }
+  notify: restart monit
+  tags: config
+
+- name: Déploiement du template smarttools si x86_64
+  ansible.builtin.template:
+    src: templates/smarttools.j2
+    dest: /etc/monit.d/smarttools.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: no
+  when: architecture_processeur == 'x86_64'
+  tags: config
+
+- name: Ouverture du port cockpit dans le firewall
+  ansible.posix.firewalld:
+    service: cockpit
+    permanent: true
+    state: enabled
+    immediate: yes
+  tags: firewall
+
+- name: Gestion des facts
+  block:
+    - name: Création du fichier facts (playbook)
+      ansible.builtin.template:
+        src: ../ficscommun/templates/fact.j2
+        dest: /etc/ansible/facts.d/monit.fact
+        owner: root
+        group: root
+        mode: '0644'
+        backup: no
+  rescue:
+    - name: Création du fichier facts (site)
+      ansible.builtin.template:
+        src: ficscommun/templates/fact.j2
+        dest: /etc/ansible/facts.d/monit.fact
+        owner: root
+        group: root
+        mode: '0644'
+        backup: no
+  tags: facts
+
+- name: Mise à jour des valeurs de fact via ini_file
+  ansible.builtin.ini_file:
+    path: /etc/ansible/facts.d/monit.fact
+    section: installation
+    option: "{{ item.option }}"
+    value: "{{ item.valeur }}"
+    mode: '0600'
+    backup: no
+  loop:
+    - {option: 'playbook_version', valeur: "{{ version_playbook }}" }
+    - {option: 'role_version', valeur: "{{ version_role }}" }
+    - {option: 'type_machine', valeur: "{{ architecture_processeur }}" }
+    - {option: 'jour_installation', valeur: "{{ ansible_date_time.weekday }}" }
+    - {option: 'date_installation', valeur: "{{ ansible_date_time.day }}/{{ ansible_date_time.month }}/{{ ansible_date_time.year }}" }
+    - {option: 'heure_installation', valeur: "{{ ansible_date_time.time }}" }
+  tags: facts

@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+# Surveillance du service php-fpm
+check process php-fpm with pidfile /var/run/php-fpm/php-fpm.pid
+
+# Gestion du daemon
+start program  "/usr/bin/systemctl start php-fpm"
+stop program  "/usr/bin/systemctl stop php-fpm"
+restart program  "/usr/bin/systemctl restart php-fpm"
+
+# Conditions de surveillance
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group webserver

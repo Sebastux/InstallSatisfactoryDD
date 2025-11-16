@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+# Surveillance du deamon clamd
+check process Antivirus with pidfile /var/run/clamd.service/freshclam.pid
+
+start program = "/usr/bin/systemctl start clamav-freshclam"
+stop  program = "/usr/bin/systemctl stop clamav-freshclam"
+restart  program = "/usr/bin/systemctl restart clamav-freshclam"
+
+# Alerte
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group antivirus

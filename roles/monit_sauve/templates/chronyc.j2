@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+# Informations sur le serveur
+check program infosntp with path "/usr/bin/chronyc tracking"
+
+# Condition de surveillance
+if status != 0 then alert
+
+# Liste des serveurs source
+check program sourcesntp with path "/usr/bin/chronyc sources"
+
+# Condition de surveillance
+if status != 0 then alert
+
+# Ajout du soft dans un groupe
+group temps

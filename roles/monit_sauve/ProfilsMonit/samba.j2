@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+# Surveillance du service samba
+check process Samba with pidfile /var/run/samba.pid
+
+# Gestion du daemon
+start program  "/usr/bin/systemctl start samba"
+stop program  "/usr/bin/systemctl stop sshd"
+restart program  "/usr/bin/systemctl restart samba"
+
+# Conditions de surveillance
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group ActiveDirectory

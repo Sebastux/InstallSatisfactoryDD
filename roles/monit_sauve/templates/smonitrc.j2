@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+# Fichier de configuration du serveur ssh
+check file monitrc path /etc/monitrc
+
+# Hash du fichier
+if failed checksum and
+   expect the sum {{ monitrc.stat.checksum }}
+then alert
+
+# Envoi d’une alerte si la somme SHA1 du fichier change
+if changed sha1 checksum then stop
+
+# Ajout du fichier dans un groupe
+group fichierconfig

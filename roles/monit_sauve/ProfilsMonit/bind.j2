@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+# Surveillance du service bind
+check process DNS with pidfile /var/run/named/named.pid
+
+# Gestion du daemon
+start program  "/usr/bin/systemctl start named"
+stop program  "/usr/bin/systemctl stop named"
+restart program  "/usr/bin/systemctl restart named"
+
+# Conditions de surveillance
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group ActiveDirectory

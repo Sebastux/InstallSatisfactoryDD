@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+# surveillance de l'espace RAM
+check program RAM with path "/usr/bin/free --mega -h"
+
+# Alerte
+if status != 0 then alert
+
+# Ajout du soft dans un groupe
+group moniteur

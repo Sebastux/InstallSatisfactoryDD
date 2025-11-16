@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+# Surveillance de l'espace disque
+check program Disque_Dur with path "/bin/df -h"
+
+# Condition de surveillance
+if status != 0 then alert
+
+# Ajout du soft dans un groupe
+group moniteur

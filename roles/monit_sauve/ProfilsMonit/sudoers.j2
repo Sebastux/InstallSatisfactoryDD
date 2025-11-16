@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+# Fichier de configuration du serveur ssh
+check file administrastux path /etc/sudoers.d/administrastux
+
+# Hash du fichier
+if failed checksum and
+   expect the sum {{ sudoers.stat.checksum }}
+then alert
+
+# Envoi d’une alerte si la somme SHA1 du fichier change
+if changed sha1 checksum then stop
+if failed permission 644 then unmonitor
+if failed uid root then unmonitor
+if failed gid root then unmonitor
+
+# Ajout du fichier dans un groupe
+group sécurité

@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+# Surveillance du service nginx
+check process serveur_web with pidfile /var/run/nginx.pid
+
+# Gestion du daemon
+start program  "/usr/bin/systemctl start nginx"
+stop program  "/usr/bin/systemctl stop nginx"
+restart program  "/usr/bin/systemctl restart nginx"
+
+# Conditions de surveillance
+if 5 restarts within 5 cycles then timeout
+
+# Ajout du soft dans un groupe
+group web

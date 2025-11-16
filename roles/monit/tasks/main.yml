@@ -1,0 +1,219 @@
+---
+- name: Test de l'opération à effectuer.
+  stat:
+    path: /etc/ansible/facts.d/monit.fact
+  register: operation
+
+- name: Création du répertoire de travail.
+  file:
+    path: "{{ rep_travail }}"
+    owner: root
+    group: root
+    mode: 0700
+    state: directory
+
+- name: Arret des services fail2ban yum cron et clamav.
+  systemd:
+    name: "{{ item.service }}"
+    state: stopped
+    enabled: "{{ item.boot }}"
+  with_items:
+    - { service: 'fail2ban', boot: 'yes' }
+    - { service: 'clamav-freshclam', boot: 'yes' }
+    - { service: 'clamd@scan', boot: 'yes' }
+  ignore_errors: yes
+
+- name: Mise à jour du système.
+  yum:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+# Ajout de packages
+- name: Installation de monit et des dépendances.
+  yum:
+    name: "{{ liste_packages }}"
+    state: latest
+    update_cache: yes
+
+- name: Arret de plusieurs services.
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: yes
+  with_items:
+    - monitorix
+    - monit
+
+- name: Installation du fichier de configuration de monitorix.
+  template:
+    src: templates/monitorixconf.j2
+    dest: /etc/monitorix/monitorix.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: no
+
+- name: Calcule des hash des fichiers de config.
+  import_tasks: hash.yml
+
+- name: Installation des profiles.
+  import_tasks: profiles.yml
+
+- name: Ajout d'une règle dans le pare-feu pour monitorix et monit.
+  firewalld:
+    port: "{{ item }}"
+    permanent: True
+    state: enabled
+    immediate: yes
+  with_items:
+    - 8080/tcp
+    - "{{ port_ecoute }}/tcp"
+
+- name: Gestion d'erreur de copie de template.
+  block:
+    - name: Création du fichier facts (playbook).
+      template:
+        src: ../ficscommun/templates/fact.j2
+        dest: /etc/ansible/facts.d/monit.fact
+        owner: root
+        group: root
+        backup: no
+        mode: 0644
+  rescue:
+    - name: Création du fichier facts (site).
+      template:
+        src: ficscommun/templates/fact.j2
+        dest: /etc/ansible/facts.d/monit.fact
+        owner: root
+        group: root
+        backup: no
+        mode: 0644
+
+- name: Remplissage du fichiers de fact.
+  ini_file:
+    path: /etc/ansible/facts.d/monit.fact
+    section: install
+    option: "{{ item.option }}"
+    value: "{{ item.valeur }}"
+    mode: 0644
+    backup: no
+  with_items:
+    - {option: 'playbook_version', valeur: "{{ version_playbook }}" }
+    - {option: 'role_version', valeur: "{{ version_role }}" }
+    - {option: 'monit_version', valeur: "{{ version_monit }}" }
+    - {option: 'jour_installation', valeur: "{{ ansible_date_time.weekday }}" }
+    - {option: 'date_installation', valeur: "{{ ansible_date_time.day }}/{{ ansible_date_time.month }}/{{ ansible_date_time.year }}" }
+    - {option: 'heure_installation', valeur: "{{ ansible_date_time.time }}" }
+  when: not operation.stat.exists
+
+- name: Mise à jour du fichiers de fact.
+  ini_file:
+    path: /etc/ansible/facts.d/monit.fact
+    section: maj
+    option: "{{ item.option }}"
+    value: "{{ item.valeur }}"
+    mode: 0644
+    backup: no
+  with_items:
+    - {option: 'playbook_version', valeur: "{{ version_playbook }}" }
+    - {option: 'role_version', valeur: "{{ version_role }}" }
+    - {option: 'monit_version', valeur: "{{ version_monit }}" }
+    - {option: 'jour_maj', valeur: "{{ ansible_date_time.weekday }}" }
+    - {option: 'date_maj', valeur: "{{ ansible_date_time.day }}/{{ ansible_date_time.month }}/{{ ansible_date_time.year }}" }
+    - {option: 'heure_maj', valeur: "{{ ansible_date_time.time }}" }
+  when: operation.stat.exists
+
+- name: Création de la CSR du certificat.
+  openssl_csr:
+    force: yes
+    backup: no
+    select_crypto_backend: cryptography
+    path: "{{ rep_travail }}/certsign.csr"
+    privatekey_path: "{{ rep_certs }}/intermed-ca.key"
+    privatekey_passphrase: "{{ pass_ca }}"
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+    common_name: "{{ domaine }}"
+    country_name: "{{ code_pays }}"
+    state_or_province_name: "{{ nom_pays }}"
+    email_address: "{{ adresse_mail }}"
+    locality_name: "{{ nom_ville }}"
+    organization_name: "{{ nom_entreprise }}"
+    organizational_unit_name: "{{ nom_service }}"
+  when: ssl_enable
+
+- name: Création de la clé privé.
+  openssl_privatekey:
+    force: yes
+    backup: no
+    path: "{{ rep_travail }}/cleprivee.pem"
+    select_crypto_backend: cryptography
+    type: RSA
+    size: 2048
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+  when: ssl_enable
+
+- name: Création et signature du certificat.
+  openssl_certificate:
+    force: yes
+    backup: no
+    ownca_not_after: "+3650d"
+    path: "{{ rep_travail }}/certificat.crt"
+    privatekey_path: "{{ rep_travail }}/cleprivee.pem"
+    csr_path: "{{ rep_travail }}/certsign.csr"
+    ownca_path: "{{ rep_certs }}/intermed-ca.cert.pem"
+    ownca_privatekey_path: "{{ rep_certs }}/intermed-ca.key"
+    ownca_privatekey_passphrase: "{{ pass_ca }}"
+    provider: ownca
+    state: present
+    owner: root
+    group: root
+    mode: 0600
+  when: ssl_enable
+
+- name: Copies de fichiers.
+  copy:
+    src: "files/{{ item.source }}"
+    dest: "{{ rep_travail }}/{{ item.destination }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    backup: no
+  with_items:
+    - {source: 'certificat.sh', destination: "certificat.sh", mode: '0700' }
+    - {source: 'monit.cnf', destination: "monit.cnf", mode: '0600' }
+  when: ssl_enable
+
+- name: Création du DH param.
+  openssl_dhparam:
+    path: "{{ rep_travail }}/dhparam.pem"
+    size: 2048
+    force: yes
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+  when: ssl_enable
+
+- name: Installation du certificat.
+  shell: ./certificat.sh
+  args:
+    executable: /bin/bash
+    chdir: "{{ rep_travail }}"
+  when: ssl_enable
+
+- name: Suppression du répertoire de travail temporaire.
+  file:
+    path: "{{ rep_travail }}"
+    state: absent
+
+- name: Redémarrage du serveur.
+  reboot:
+    msg: "Redémarrage automatique du serveur par ansible."
+    reboot_timeout: 300

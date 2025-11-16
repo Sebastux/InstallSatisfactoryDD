@@ -1,0 +1,101 @@
+---
+- name: Copie des templates de profils.
+  template:
+    src: "templates/{{ item.source }}"
+    dest: "/etc/{{ item.destination }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    backup: no
+  with_items:
+    - {source: 'chronyd.j2' , destination: 'monit.d/chronyd.conf',mode: '0644' }
+    - {source: 'crond.j2' , destination: 'monit.d/crond.conf',mode: '0644' }
+    - {source: 'chronyconf.j2' , destination: 'monit.d/chronyconf.conf',mode: '0644' }
+    - {source: 'free.j2' , destination: 'monit.d/free.conf',mode: '0644' }
+    - {source: 'rsyslog.j2' , destination: 'monit.d/rsyslog.conf',mode: '0644' }
+    - {source: 'smonitrc.j2' , destination: 'monit.d/monitrc.conf',mode: '0644' }
+    - {source: 'sshd.j2' , destination: 'monit.d/sshd.conf',mode: '0644' }
+    - {source: 'df.j2' , destination: 'monit.d/df.conf',mode: '0644' }
+    - {source: 'machine.j2' , destination: 'monit.d/machine.conf',mode: '0644' }
+    - {source: 'sensors.j2' , destination: 'monit.d/sensors.conf',mode: '0644' }
+    - {source: 'sshdconfig.j2' , destination: 'monit.d/sshdconfig.conf',mode: '0644' }
+    - {source: 'top.j2' , destination: 'monit.d/top.conf',mode: '0644' }
+    - {source: 'monitrc.j2' , destination: 'monitrc',mode: '0600' }
+    - {source: 'clamdconf.j2' , destination: 'monit.d/clamdconf.conf',mode: '0644' }
+    - {source: 'freshclamconf.j2' , destination: 'monit.d/freshclam.conf',mode: '0644' }
+    - {source: 'logmonit.j2' , destination: 'logrotate.d/monit',mode: '0644' }
+    - {source: 'clamscanconf.j2' , destination: 'monit.d/clamscanconf.conf',mode: '0644' }
+    - {source: 'sudoers.j2' , destination: 'monit.d/sudoers.conf',mode: '0644' }
+    - {source: 'monitorix.j2' , destination: 'monit.d/monitorix.conf',mode: '0644' }
+    - {source: 'smonitorixconf.j2' , destination: 'monit.d/monitorixconf.conf',mode: '0644' }
+
+- name: Copie des templates de profils samba.
+  template:
+    src: templates/bind.j2
+    dest: /etc/monit.d/bind.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: no
+  with_items:
+    - {source: 'samba.j2' , destination: 'monit.d/samba.conf' }
+    - {source: 'smbconf.j2' , destination: 'monit.d/smbconf.conf' }
+    - {source: 'kerberos.j2' , destination: 'monit.d/kerberos.conf',mode: '0644' }
+  when: samba.stat.exists
+
+- name: Copie des templates de profils bind.
+  template:
+    src: "templates/{{ item.source }}"
+    dest: "/etc/monit.d/{{ item.destination }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: no
+  with_items:
+    - {source: 'bind.j2' , destination: 'bind.conf' }
+    - {source: 'bindconf.j2' , destination: 'bindconf.conf' }
+  when: dns.stat.exists
+
+- name: Copie des templates de profils waptserver.
+  template:
+    src: "templates/{{ item.source }}"
+    dest: "/etc/monit.d/{{ item.destination }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: no
+  with_items:
+    - {source: 'waptini.j2' , destination: 'waptini.conf' }
+    - {source: 'wapt.j2' , destination: 'wapt.conf' }
+    - {source: 'nginx.j2' , destination: 'nginx.conf' }
+    - {source: 'postgres.j2' , destination: 'postgres.conf' }
+  when: wapt.stat.exists
+
+- name: Modification du port ssh dans le fichier de profil.
+  lineinfile:
+    path: /etc/monit.d/sshd.conf
+    regexp: "port 22"
+    line: "if failed host {{ ansible_default_ipv4.address }} port 23 then restart"
+    owner: root
+    group: root
+    mode: 0644
+    state: present
+  when: wapt.stat.exists
+
+- name: Ajout de plusieurs profils pour monit.
+  template:
+    src: "templates/{{ item.source }}"
+    dest: "/etc/monit.d/{{ item.destination }}"
+    owner: root
+    group: root
+    backup: no
+    mode: 0644
+  with_items:
+    - { source: 'agentconf.j2', destination: 'agentconf.conf' }
+    - { source: 'apache.j2', destination: 'apache.conf' }
+    - { source: 'glpiconf.j2', destination: 'glpiconf.conf' }
+    - { source: 'httpdconf.j2', destination: 'httpdconf.conf' }
+    - { source: 'httptuxconf.j2', destination: 'httptuxconf.conf' }
+    - { source: 'mariadb.j2', destination: 'mariadb.conf' }
+    - { source: 'phpfpm.j2', destination: 'phpfpm.conf' }
+  when: glpi.stat.exists

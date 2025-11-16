@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+# Affichage de la liste des processus.
+check program Liste_processus with path "/usr/bin/top -n1 -b"
+
+# Alerte
+if status != 0 then alert
+
+# Ajout du soft dans un groupe
+group moniteur

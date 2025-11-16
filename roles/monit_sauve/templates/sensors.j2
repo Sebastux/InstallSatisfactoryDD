@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+# Ajout du soft dans un groupe
+group moniteur
+
+check program sensors with path /usr/bin/sensors
+  if status != 0 then alert
