@@ -1,13 +1,5 @@
 ---
-version_role: 1.0.0
-
-liste_packages: [ 'monit', 'lm_sensors', 'lm_sensors-libs', 'smartmontools',
-                  'sysstat', 'monitorix', 'wget', 'rrdtool', 'rrdtool-perl',
-                  'perl-libwww-perl', 'perl-MailTools', 'perl-MIME-Lite',
-                  'perl-CGI', 'perl-DBI', 'perl-XML-Simple','perl-Config-General',
-                  'perl-HTTP-Server-Simple', 'perl-IO-Socket-SSL' ]
-
-version_monit: "package"
+liste_packages: ['monit', 'lm-sensors', 'smartmontools', 'sysstat', 'rrdtool', 'iotop']
 
 # ************* Configuration de monit *************
 
@@ -21,7 +13,7 @@ cpte_utils: Utilisateur
 port_ecoute: 5962
 
 # Autoriser l'utilisation du compte invité en lecture seule. Les valeurs sont true ou false
-autorisation_guest: true
+autorisation_guest: false
 
 # Autoriser l'accès en local. Les valeurs sont true ou false
 autorisation_localhost: false

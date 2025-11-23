@@ -1,0 +1,34 @@
+---
+- name: Installation des packages monit.
+  ansible.builtin.apt:
+    name: "{{ liste_packages }}"
+    state: latest
+    update_cache: true
+  tags:
+    - packages
+
+- name: Calcule des hash des fichiers de config.
+  import_tasks: hash.yml
+
+- name: Installation des profiles.
+  import_tasks: profiles.yml
+
+- name: Copie du fichier de règle du pare-feu.
+  ansible.builtin.template:
+    src: monit_firewall.j2
+    dest: /etc/firewalld/services/monit.xml
+    owner: root
+    group: root
+    mode: '0640'
+    backup: false
+  tags:
+    - firewalld
+
+- name: Ouverture du pare-feu pour monit.
+  ansible.posix.firewalld:
+    service: monit
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewalld
